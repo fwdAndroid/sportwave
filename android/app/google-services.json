@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "479784229163",
+    "project_id": "test-91ace",
+    "storage_bucket": "test-91ace.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479784229163:android:fd03c410feb823e935cd6e",
+        "android_client_info": {
+          "package_name": "com.example.sportwave"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe9ceDg8t6tqDmcWx5AhlZDK2usE1isZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479784229163:android:b2b847bd05c760ea35cd6e",
+        "android_client_info": {
+          "package_name": "com.example.sportwave_blog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe9ceDg8t6tqDmcWx5AhlZDK2usE1isZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
