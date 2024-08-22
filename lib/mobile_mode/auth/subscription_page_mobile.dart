@@ -6,6 +6,7 @@ import 'package:sportwave/mobile_mode/auth/login_screen.dart';
 import 'package:sportwave/mobile_mode/colors.dart';
 import 'package:sportwave/mobile_mode/main/main_dashboard.dart';
 import 'package:sportwave/mobile_mode/subscription/subscription_one.dart';
+import 'package:sportwave/mobile_mode/subscription/subscription_three.dart';
 
 class SubscriptionPageMobile extends StatefulWidget {
   const SubscriptionPageMobile({super.key});
@@ -99,17 +100,10 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        await FirebaseFirestore.instance
-                            .collection("users")
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .update({"isPaid": true});
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                "You Just Paid 50 euro for three month Subscription")));
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (builder) => MainDashboard()));
+                                builder: (builder) => SubscriptionThree()));
                       },
                       child: Text(
                         "Pay",

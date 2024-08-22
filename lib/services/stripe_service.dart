@@ -8,12 +8,14 @@ class StripeService {
   Future<void> makePayment(int amount) async {
     try {
       String? result = await createPaymentIntent(amount, "usd");
+      print("sdd" + result.toString());
       if (result == null) return;
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
               paymentIntentClientSecret: result,
               merchantDisplayName: "The Game Before The Game"));
       await _paymentProcess();
+      print(result);
     } catch (E) {
       print(E);
     }
@@ -37,7 +39,10 @@ class StripeService {
           },
         ),
       );
+      print(response.data);
       if (response.data != null) {
+        print("response.data");
+        //  print("Payment Response: " + response.data);
         return response.data["client_secret"];
       }
       return null;
@@ -54,8 +59,11 @@ class StripeService {
 
   Future<void> _paymentProcess() async {
     try {
+      print("Payment Called");
       await Stripe.instance.presentPaymentSheet();
-      await Stripe.instance.confirmPaymentSheetPayment();
+      print("Open");
+      // Stripe.instance.confirmPaymentSheetPayment();
+      print("DOne");
     } catch (e) {
       print(e);
     }

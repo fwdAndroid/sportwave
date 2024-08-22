@@ -25,130 +25,133 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            "assets/logo.png",
-            width: 200,
-            fit: BoxFit.cover,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormInputField(
-                controller: _emailController,
-                hintText: "Email Address",
-                IconSuffix: Icons.email,
-                textInputType: TextInputType.emailAddress),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormInputField(
-                controller: _passwordController,
-                hintText: "Password",
-                IconSuffix: Icons.visibility,
-                textInputType: TextInputType.visiblePassword),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: _isLoading
-                ? CircularProgressIndicator()
-                : SaveButton(
-                    title: "Login",
-                    onTap: () async {
-                      if (_emailController.text.isEmpty ||
-                          _passwordController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Email or Password is Required")));
-                      } else {
-                        setState(() {
-                          _isLoading = true;
-                        });
-
-                        String res = await AuthMethods().loginUpUser(
-                          email: _emailController.text,
-                          pass: _passwordController.text,
-                        );
-
-                        setState(() {
-                          _isLoading = false;
-                        });
-                        if (res != 'sucess') {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(res)));
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/logo.png",
+              width: 200,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormInputField(
+                  controller: _emailController,
+                  hintText: "Email Address",
+                  IconSuffix: Icons.email,
+                  textInputType: TextInputType.emailAddress),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormInputField(
+                  controller: _passwordController,
+                  hintText: "Password",
+                  IconSuffix: Icons.visibility,
+                  textInputType: TextInputType.visiblePassword),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _isLoading
+                  ? CircularProgressIndicator()
+                  : SaveButton(
+                      title: "Login",
+                      onTap: () async {
+                        if (_emailController.text.isEmpty ||
+                            _passwordController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Email or Password is Required")));
                         } else {
+                          setState(() {
+                            _isLoading = true;
+                          });
+
+                          String res = await AuthMethods().loginUpUser(
+                            email: _emailController.text,
+                            pass: _passwordController.text,
+                          );
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+                          if (res != 'sucess') {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(res)));
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (builder) => CheckMobile(
+                                          uid: FirebaseAuth
+                                              .instance.currentUser!.uid,
+                                        )));
+                          }
+                        }
+                      }),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  margin: const EdgeInsets.only(right: 25),
+                  child: SizedBox(
+                    width: 154,
+                    child: TextButton(
+                        onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (builder) => CheckMobile(
-                                        uid: FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                      )));
-                        }
-                      }
-                    }),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                margin: const EdgeInsets.only(right: 25),
-                child: SizedBox(
-                  width: 154,
-                  child: TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (builder) => ForgotPasswordMobile()));
-                      },
-                      child: Text(
-                        "Forgot Password",
-                        style: GoogleFonts.dmSans(
-                            color: black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold),
-                      )),
+                                  builder: (builder) =>
+                                      ForgotPasswordMobile()));
+                        },
+                        child: Text(
+                          "Forgot Password",
+                          style: GoogleFonts.dmSans(
+                              color: black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ),
                 ),
               ),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (builder) => SignUpAccountMobile()));
-            },
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Want To Create New Account?",
-                    style: GoogleFonts.dmSans(
-                      color: black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => SignUpAccountMobile()));
+              },
+              child: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "Want To Create New Account?",
+                      style: GoogleFonts.dmSans(
+                        color: black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text: '\n Click Here',
-                    style: GoogleFonts.dmSans(
-                      color: Colors.orange,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
+                    TextSpan(
+                      text: '\n Click Here',
+                      style: GoogleFonts.dmSans(
+                        color: Colors.orange,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
