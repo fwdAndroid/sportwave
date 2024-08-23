@@ -141,7 +141,7 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text('Yes'),
               onPressed: () {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (builder) => LoginScreen()));

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sportwave/mobile_mode/auth/forgot_password_mobile.dart';
 import 'package:sportwave/mobile_mode/auth/sign_up_account_mobile.dart';
 import 'package:sportwave/mobile_mode/auth/subscription_page_mobile.dart';
+import 'package:sportwave/mobile_mode/colors.dart';
 import 'package:sportwave/mobile_mode/main/main_dashboard.dart';
 import 'package:sportwave/mobile_mode/widgets/text_form_field.dart';
 import 'package:sportwave/services/auth.dart';
@@ -170,19 +171,25 @@ class CheckMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _CheckMobile(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else if (snapshot.data == true) {
-          return MainDashboard();
-        } else {
-          return SubscriptionPageMobile();
-        }
-      },
+    return Scaffold(
+      body: FutureBuilder<bool>(
+        future: _CheckMobile(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: mainBtnColor,
+              ),
+            );
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (snapshot.data == true) {
+            return MainDashboard();
+          } else {
+            return SubscriptionPageMobile();
+          }
+        },
+      ),
     );
   }
 }

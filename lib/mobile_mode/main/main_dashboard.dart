@@ -24,51 +24,83 @@ class _MainDashboardState extends State<MainDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedLabelStyle: TextStyle(color: mainBtnColor),
-        backgroundColor: mobileBackgroundColor,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: _currentIndex == 0 ? mobileBackgroundColor : textformColor,
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await _showExitDialog(context);
+        return shouldPop ?? false;
+      },
+      child: Scaffold(
+        body: _screens[_currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          selectedLabelStyle: TextStyle(color: mainBtnColor),
+          backgroundColor: mobileBackgroundColor,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color:
+                    _currentIndex == 0 ? mobileBackgroundColor : textformColor,
+              ),
+              label: 'Home',
+              backgroundColor: colorwhite,
             ),
-            label: 'Home',
-            backgroundColor: colorwhite,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.newspaper,
-              color: _currentIndex == 1 ? mobileBackgroundColor : textformColor,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.newspaper,
+                color:
+                    _currentIndex == 1 ? mobileBackgroundColor : textformColor,
+              ),
+              label: 'News',
+              backgroundColor: colorwhite,
             ),
-            label: 'News',
-            backgroundColor: colorwhite,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.query_builder,
-              color: _currentIndex == 2 ? mobileBackgroundColor : textformColor,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.query_builder,
+                color:
+                    _currentIndex == 2 ? mobileBackgroundColor : textformColor,
+              ),
+              label: 'FAQ',
+              backgroundColor: colorwhite,
             ),
-            label: 'FAQ',
-            backgroundColor: colorwhite,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-              color: _currentIndex == 3 ? mobileBackgroundColor : textformColor,
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.settings,
+                color:
+                    _currentIndex == 3 ? mobileBackgroundColor : textformColor,
+              ),
+              label: 'Settings',
+              backgroundColor: colorwhite,
             ),
-            label: 'Settings',
-            backgroundColor: colorwhite,
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  _showExitDialog(BuildContext context) {
+    Future<bool?> _showExitDialog(BuildContext context) {
+      return showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Exit App'),
+          content: Text('Do you want to exit the app?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Yes'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
