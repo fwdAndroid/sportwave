@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:sportwave/mobile_mode/colors.dart';
 import 'package:sportwave/mobile_mode/main/faq_mobile_page.dart';
 import 'package:sportwave/mobile_mode/main/home_page_mobile.dart';
@@ -13,94 +14,88 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-  int _currentIndex = 0;
+  PersistentTabController? _controller;
 
-  final List<Widget> _screens = [
-    HomePageMobile(),
-    NewsPageMobile(),
-    FaqMobilePage(),
-    SettingMobilePage()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+  }
+
+  List<Widget> _buildScreens() {
+    return [
+      HomePageMobile(),
+      NewsPageMobile(),
+      FaqMobilePage(),
+      SettingMobilePage(),
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.home),
+        activeColorPrimary: mobileBackgroundColor,
+        inactiveColorPrimary: textformColor,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.newspaper),
+        activeColorPrimary: mobileBackgroundColor,
+        inactiveColorPrimary: textformColor,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.query_builder),
+        activeColorPrimary: mobileBackgroundColor,
+        inactiveColorPrimary: textformColor,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.settings),
+        activeColorPrimary: mobileBackgroundColor,
+        inactiveColorPrimary: textformColor,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         final shouldPop = await _showExitDialog(context);
-        return shouldPop ?? false;
+        return shouldPop ?? false; // Return false to prevent closing the app
       },
-      child: Scaffold(
-        body: _screens[_currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          selectedLabelStyle: TextStyle(color: mainBtnColor),
-          backgroundColor: mobileBackgroundColor,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color:
-                    _currentIndex == 0 ? mobileBackgroundColor : textformColor,
-              ),
-              label: 'Home',
-              backgroundColor: colorwhite,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.newspaper,
-                color:
-                    _currentIndex == 1 ? mobileBackgroundColor : textformColor,
-              ),
-              label: 'News',
-              backgroundColor: colorwhite,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.query_builder,
-                color:
-                    _currentIndex == 2 ? mobileBackgroundColor : textformColor,
-              ),
-              label: 'FAQ',
-              backgroundColor: colorwhite,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                color:
-                    _currentIndex == 3 ? mobileBackgroundColor : textformColor,
-              ),
-              label: 'Settings',
-              backgroundColor: colorwhite,
-            ),
-          ],
-        ),
+      child: PersistentTabView(
+        context,
+        controller: _controller,
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        navBarStyle: NavBarStyle.style6, // Choose the nav bar style here
+        backgroundColor: colorwhite, // Set the background color for the nav bar
+        onItemSelected: (index) {
+          setState(() {
+            _controller!.index = index;
+          });
+        },
       ),
     );
   }
 
-  _showExitDialog(BuildContext context) {
-    Future<bool?> _showExitDialog(BuildContext context) {
-      return showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Exit App'),
-          content: Text('Do you want to exit the app?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('No'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Yes'),
-            ),
-          ],
-        ),
-      );
-    }
+  Future<bool?> _showExitDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Exit App'),
+        content: Text('Do you want to exit the app?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text('Yes'),
+          ),
+        ],
+      ),
+    );
   }
 }
