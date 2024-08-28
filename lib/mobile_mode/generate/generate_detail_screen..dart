@@ -175,12 +175,34 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
+                    "Event Result Over 80%",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              if (widget.fixtureData['result_info'] != null)
+                Center(
+                  child: Text(
+                    "${homeTeam['yes']}%",
+                  ),
+                ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
                     "Full Time Result",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
+              if (widget.fixtureData['result_info'] != null)
+                Center(
+                  child: Text(
+                    "Result: ${widget.fixtureData['result_info']}",
+                  ),
+                ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
@@ -208,6 +230,41 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                             Text("No"),
                             Text(
                               "${homeTeam['no']}%",
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Text(
+                      "No Prediction Found",
+                    ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Over 2.5 Goals",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              overgoals.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            Text("Yes"),
+                            Text(
+                              "${overgoals['yes']}%",
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text("No"),
+                            Text(
+                              "${overgoals['no']}%",
                             ),
                           ],
                         ),

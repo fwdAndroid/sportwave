@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sportwave/const/constant_key.dart';
 import 'package:sportwave/firebase_options.dart';
+import 'package:sportwave/mobile_mode/generate/genearate_app.dart';
 import 'package:sportwave/mobile_mode/splash_screen.dart';
 
 void main() async {

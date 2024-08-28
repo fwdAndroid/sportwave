@@ -22,7 +22,6 @@ class _HomePageMobileState extends State<HomePageMobile> {
   TextEditingController numberOfResponsesController = TextEditingController();
   DateTime? selectedStartDate;
   DateTime? selectedEndDate;
-  int numberOfResponses = 20; // Default value
   bool isLoading = false;
 
   @override
@@ -53,7 +52,6 @@ class _HomePageMobileState extends State<HomePageMobile> {
           MaterialPageRoute(
             builder: (context) => FixturesScreenMobile(
               fixturesData: jsonDecode(response.body),
-              numberOfResponses: numberOfResponses,
             ),
           ),
         );
@@ -143,79 +141,7 @@ class _HomePageMobileState extends State<HomePageMobile> {
                           enabled: true,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Number of Event",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: colorwhite),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 9),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InputText(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Number of Entries"),
-                                  content: TextField(
-                                    controller: numberOfResponsesController,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                        hintText: "Enter a number (max 20)"),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        int? inputNumber = int.tryParse(
-                                            numberOfResponsesController.text);
-                                        if (inputNumber != null &&
-                                            inputNumber > 0 &&
-                                            inputNumber <= 20) {
-                                          setState(() {
-                                            numberOfResponses = inputNumber;
-                                          });
-                                          Navigator.of(context).pop();
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            SnackBar(
-                                                content: Text(
-                                                    "Please enter a valid number (1-20)")),
-                                          );
-                                        }
-                                      },
-                                      child: Text("OK"),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text("Cancel"),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          controller: numberOfResponsesController,
-                          labelText: "20",
-                          keyboardType: TextInputType.visiblePassword,
-                          onChanged: (value) {},
-                          onSaved: (val) {},
-                          textInputAction: TextInputAction.done,
-                          isPassword: false,
-                          enabled: true,
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SaveButton(
@@ -267,10 +193,10 @@ class _HomePageMobileState extends State<HomePageMobile> {
 
 class FixturesScreenMobile extends StatefulWidget {
   final dynamic fixturesData;
-  final int numberOfResponses;
 
-  FixturesScreenMobile(
-      {required this.fixturesData, required this.numberOfResponses});
+  FixturesScreenMobile({
+    required this.fixturesData,
+  });
 
   @override
   State<FixturesScreenMobile> createState() => _FixturesScreenMobileState();
@@ -281,9 +207,7 @@ class _FixturesScreenMobileState extends State<FixturesScreenMobile> {
   Widget build(BuildContext context) {
     int itemCount = widget.fixturesData['data'].length;
     // Limit the item count to the selected number of responses
-    if (itemCount > widget.numberOfResponses) {
-      itemCount = widget.numberOfResponses;
-    }
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -694,7 +618,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    "Home Team To Win",
+                    "Over/Under 1.5",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),

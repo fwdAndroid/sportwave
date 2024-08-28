@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:sportwave/mobile_mode/colors.dart';
+import 'package:sportwave/mobile_mode/generate/genearate_app.dart';
 import 'package:sportwave/mobile_mode/main/faq_mobile_page.dart';
 import 'package:sportwave/mobile_mode/main/home_page_mobile.dart';
 import 'package:sportwave/mobile_mode/main/news_page_mobile.dart';
@@ -27,6 +28,7 @@ class _MainDashboardState extends State<MainDashboard> {
       HomePageMobile(),
       NewsPageMobile(),
       FaqMobilePage(),
+      GenerateApp(),
       SettingMobilePage(),
     ];
   }
@@ -45,6 +47,11 @@ class _MainDashboardState extends State<MainDashboard> {
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.query_builder),
+        activeColorPrimary: mobileBackgroundColor,
+        inactiveColorPrimary: textformColor,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.airplane_ticket),
         activeColorPrimary: mobileBackgroundColor,
         inactiveColorPrimary: textformColor,
       ),
