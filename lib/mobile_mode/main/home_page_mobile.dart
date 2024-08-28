@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sportwave/mobile_mode/generate/genearate_app.dart';
 import 'package:sportwave/mobile_mode/widgets/button.dart';
 
 import 'package:sportwave/utils/colors.dart';
@@ -164,7 +165,7 @@ class _HomePageMobileState extends State<HomePageMobile> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: Text("Select Number of Responses"),
+                                  title: Text("Number of Entries"),
                                   content: TextField(
                                     controller: numberOfResponsesController,
                                     keyboardType: TextInputType.number,
@@ -517,6 +518,14 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (builder) => GenerateApp()));
+              },
+              child: Text("Gernate"))
+        ],
         title: Text(
           "${widget.fixtureData['participants'][0]['name']} vs ${widget.fixtureData['participants'][1]['name']}",
         ),
