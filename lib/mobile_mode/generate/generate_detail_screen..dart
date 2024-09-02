@@ -22,7 +22,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
     bothTeamsToScorePrediction = getSpecificPrediction(
         widget.fixtureData['predictions'],
         1684); // Type ID for "Both Teams To Score"
-    overgoals = getOverGoals(widget.fixtureData['predictions'], 334);
+    overgoals = getOverGoals(widget.fixtureData['predictions'], 1685);
     homeTeam = getHomeTeam(widget.fixtureData['predictions'], 1683);
   }
 
