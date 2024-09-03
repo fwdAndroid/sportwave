@@ -10,6 +10,8 @@ import 'package:sportwave/mobile_mode/main/setting_mobile_page.dart';
 import 'package:sportwave/utils/colors.dart';
 
 class MainDashboard extends StatefulWidget {
+  const MainDashboard({super.key});
+
   @override
   _MainDashboardState createState() => _MainDashboardState();
 }
@@ -25,38 +27,38 @@ class _MainDashboardState extends State<MainDashboard> {
 
   List<Widget> _buildScreens() {
     return [
-      HomePageMobile(),
-      NewsPageMobile(),
-      FaqMobilePage(),
-      GenerateApp(),
-      SettingMobilePage(),
+      const HomePageMobile(),
+      const NewsPageMobile(),
+      const FaqMobilePage(),
+      const GenerateApp(),
+      const SettingMobilePage(),
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
+        icon: const Icon(Icons.home),
         activeColorPrimary: mobileBackgroundColor,
         inactiveColorPrimary: textformColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.newspaper),
+        icon: const Icon(Icons.newspaper),
         activeColorPrimary: mobileBackgroundColor,
         inactiveColorPrimary: textformColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.query_builder),
+        icon: const Icon(Icons.query_builder),
         activeColorPrimary: mobileBackgroundColor,
         inactiveColorPrimary: textformColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.airplane_ticket),
+        icon: const Icon(Icons.airplane_ticket),
         activeColorPrimary: mobileBackgroundColor,
         inactiveColorPrimary: textformColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings),
+        icon: const Icon(Icons.settings),
         activeColorPrimary: mobileBackgroundColor,
         inactiveColorPrimary: textformColor,
       ),
@@ -90,16 +92,16 @@ class _MainDashboardState extends State<MainDashboard> {
     return showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Exit App'),
-        content: Text('Do you want to exit the app?'),
+        title: const Text('Exit App'),
+        content: const Text('Do you want to exit the app?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text('No'),
+            child: const Text('No'),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text('Yes'),
+            child: const Text('Yes'),
           ),
         ],
       ),

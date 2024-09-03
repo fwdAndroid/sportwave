@@ -35,5 +35,5 @@ class AppStyles {
   );
 }
 
-errorTextStyle(context) => TextStyle(
+errorTextStyle(context) => const TextStyle(
     fontSize: 10, color: Colors.red, fontWeight: FontWeight.w500, height: 1.4);

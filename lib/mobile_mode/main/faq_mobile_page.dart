@@ -10,7 +10,7 @@ class FaqMobilePage extends StatefulWidget {
 class _FaqMobilePageState extends State<FaqMobilePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         children: [
           ExpansionTile(
@@ -23,7 +23,7 @@ class _FaqMobilePageState extends State<FaqMobilePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Divider(),
           ),
           ExpansionTile(
@@ -35,7 +35,7 @@ class _FaqMobilePageState extends State<FaqMobilePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Divider(),
           ),
           ExpansionTile(
@@ -48,7 +48,7 @@ class _FaqMobilePageState extends State<FaqMobilePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Divider(),
           ),
           ExpansionTile(
@@ -60,7 +60,7 @@ class _FaqMobilePageState extends State<FaqMobilePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Divider(),
           ),
           ExpansionTile(

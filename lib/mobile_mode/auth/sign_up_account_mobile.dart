@@ -17,10 +17,10 @@ class SignUpAccountMobile extends StatefulWidget {
 
 class _SignUpAccountMobileState extends State<SignUpAccountMobile> {
   bool passwordVisible = false;
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _lastNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
 
   @override
@@ -39,7 +39,7 @@ class _SignUpAccountMobileState extends State<SignUpAccountMobile> {
         ),
         centerTitle: true,
         iconTheme: IconThemeData(color: colorwhite),
-        backgroundColor: Color(0xff000080),
+        backgroundColor: const Color(0xff000080),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -142,19 +142,22 @@ class _SignUpAccountMobileState extends State<SignUpAccountMobile> {
               ),
               const SizedBox(height: 30),
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : SaveButton(
                       title: "Continue",
                       onTap: () async {
                         if (_nameController.text.isEmpty ||
                             _lastNameController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                  "First Name and Last Name is Required")));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      "First Name and Last Name is Required")));
                         } else if (_emailController.text.isEmpty ||
                             _passwordController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Email or Password is Required")));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text("Email or Password is Required")));
                         } else {
                           setState(() {
                             _isLoading = true;
@@ -179,14 +182,16 @@ class _SignUpAccountMobileState extends State<SignUpAccountMobile> {
                               context,
                               MaterialPageRoute(
                                   builder: (builder) =>
-                                      SubscriptionPageMobile()));
+                                      const SubscriptionPageMobile()));
                         }
                       }),
               const SizedBox(height: 30),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (builder) => LoginScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => const LoginScreen()));
                 },
                 child: Text.rich(
                   TextSpan(

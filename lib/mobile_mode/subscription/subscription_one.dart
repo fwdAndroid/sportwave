@@ -27,8 +27,8 @@ class _SubscriptionOneState extends State<SubscriptionOne> {
             "assets/logo.png",
             height: 150,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
               "One Month Subscription to get free access of Subscription in just 20 Euro",
               textAlign: TextAlign.center,
@@ -39,7 +39,7 @@ class _SubscriptionOneState extends State<SubscriptionOne> {
               : ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: mainBtnColor,
-                    fixedSize: Size(200, 50),
+                    fixedSize: const Size(200, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),

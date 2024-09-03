@@ -21,11 +21,11 @@ class _NewsPageMobileState extends State<NewsPageMobile> {
         ),
         centerTitle: true,
         iconTheme: IconThemeData(color: colorwhite),
-        backgroundColor: Color(0xff000080),
+        backgroundColor: const Color(0xff000080),
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             height: 460,
             child: StreamBuilder(
                 stream:
@@ -37,7 +37,7 @@ class _NewsPageMobileState extends State<NewsPageMobile> {
                     );
                   }
                   if (snapshot.data!.docs.isEmpty) {
-                    return Center(
+                    return const Center(
                       child: Text(
                         "No Blog Posted",
                         style: TextStyle(color: Colors.black),

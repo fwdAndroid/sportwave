@@ -8,7 +8,7 @@ class StripeService {
   Future<void> makePayment(int amount) async {
     try {
       String? result = await createPaymentIntent(amount, "usd");
-      print("sdd" + result.toString());
+      print("sdd$result");
       if (result == null) return;
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(

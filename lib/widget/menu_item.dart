@@ -5,11 +5,11 @@ class MenuItem extends StatelessWidget {
   final VoidCallback press;
   final bool isSelected; // Added isSelected parameter
   const MenuItem({
-    Key? key,
+    super.key,
     required this.title,
     required this.press,
     this.isSelected = false, // Default isSelected to false
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

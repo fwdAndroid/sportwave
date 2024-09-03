@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GenernateDetailsScreen extends StatefulWidget {
   final dynamic fixtureData;
 
-  GenernateDetailsScreen({required this.fixtureData});
+  const GenernateDetailsScreen({super.key, required this.fixtureData});
 
   @override
   _GenernateDetailsScreenState createState() => _GenernateDetailsScreenState();
@@ -136,7 +136,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -171,8 +171,8 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "Full Time Result",
@@ -187,8 +187,8 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                     "Result: ${widget.fixtureData['result_info']}",
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "Over/Under 1.5",
@@ -203,7 +203,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                       children: [
                         Column(
                           children: [
-                            Text("Yes"),
+                            const Text("Yes"),
                             Text(
                               "${homeTeam['yes']}%",
                             ),
@@ -211,7 +211,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                         ),
                         Column(
                           children: [
-                            Text("No"),
+                            const Text("No"),
                             Text(
                               "${homeTeam['no']}%",
                             ),
@@ -219,11 +219,11 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                         ),
                       ],
                     )
-                  : Text(
+                  : const Text(
                       "No Prediction Found",
                     ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "Over 2.5 Goals",
@@ -238,7 +238,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                       children: [
                         Column(
                           children: [
-                            Text("Yes"),
+                            const Text("Yes"),
                             Text(
                               "${overgoals['yes']}%",
                             ),
@@ -246,7 +246,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                         ),
                         Column(
                           children: [
-                            Text("No"),
+                            const Text("No"),
                             Text(
                               "${overgoals['no']}%",
                             ),
@@ -254,7 +254,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                         ),
                       ],
                     )
-                  : Text(
+                  : const Text(
                       "No Prediction Found",
                     ),
             ],

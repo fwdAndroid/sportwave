@@ -24,7 +24,7 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
+            child: SizedBox(
               height: 300,
               width: 300,
               child: Card(
@@ -35,8 +35,8 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
                       "assets/logo.png",
                       height: 150,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         "One Month Subscription to get free access of Subscription in just 20 Euro",
                         textAlign: TextAlign.center,
@@ -50,7 +50,7 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (builder) => SubscriptionOne()));
+                                builder: (builder) => const SubscriptionOne()));
                         // await FirebaseFirestore.instance
                         //     .collection("users")
                         //     .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -63,12 +63,12 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
                         //     MaterialPageRoute(
                         //         builder: (builder) => MainDashboard()));
                       },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: mainBtnColor),
                       child: Text(
                         "Pay",
                         style: TextStyle(color: colorWhite),
                       ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: mainBtnColor),
                     )
                   ],
                 ),
@@ -77,7 +77,7 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
+            child: SizedBox(
               height: 300,
               width: 300,
               child: Card(
@@ -88,8 +88,8 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
                       "assets/logo.png",
                       height: 150,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         "Three Month Subscription to get free access of Subscription in just 50 Euro",
                         textAlign: TextAlign.center,
@@ -103,14 +103,15 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (builder) => SubscriptionThree()));
+                                builder: (builder) =>
+                                    const SubscriptionThree()));
                       },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: mainBtnColor),
                       child: Text(
                         "Pay",
                         style: TextStyle(color: colorWhite),
                       ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: mainBtnColor),
                     )
                   ],
                 ),
@@ -118,8 +119,8 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
             ),
           ),
           Center(
-              child:
-                  TextButton(onPressed: _showMyDialog, child: Text("Cancel"))),
+              child: TextButton(
+                  onPressed: _showMyDialog, child: const Text("Cancel"))),
         ],
       ),
     );
@@ -143,8 +144,10 @@ class _SubscriptionPageMobileState extends State<SubscriptionPageMobile> {
             TextButton(
               child: const Text('Yes'),
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (builder) => LoginScreen()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => const LoginScreen()));
               },
             ),
             TextButton(

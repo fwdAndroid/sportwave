@@ -13,7 +13,7 @@ class ForgotPasswordMobile extends StatefulWidget {
 }
 
 class _ForgotPasswordMobileState extends State<ForgotPasswordMobile> {
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
 
   @override
@@ -26,7 +26,7 @@ class _ForgotPasswordMobileState extends State<ForgotPasswordMobile> {
         ),
         centerTitle: true,
         iconTheme: IconThemeData(color: colorwhite),
-        backgroundColor: Color(0xff000080),
+        backgroundColor: const Color(0xff000080),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -56,14 +56,15 @@ class _ForgotPasswordMobileState extends State<ForgotPasswordMobile> {
             ),
             const SizedBox(height: 30),
             _isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : SaveButton(
                     title: "Send",
                     onTap: () async {
                       if (_passwordController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                "Email is Required To reset the password")));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    "Email is Required To reset the password")));
                       } else {
                         setState(() {
                           _isLoading = true;
@@ -75,13 +76,14 @@ class _ForgotPasswordMobileState extends State<ForgotPasswordMobile> {
                         setState(() {
                           _isLoading = false;
                         });
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                "Reset Password Link Send to your email")));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    "Reset Password Link Send to your email")));
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (builder) => LoginScreen()));
+                                builder: (builder) => const LoginScreen()));
                       }
                     })
           ],

@@ -14,7 +14,7 @@ class SaveButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
-          fixedSize: Size(335, 49),
+          fixedSize: const Size(335, 49),
           backgroundColor: mainBtnColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
@@ -42,13 +42,13 @@ class OutlineButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onTap,
       style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Color(0xffE94057), width: 1),
-          fixedSize: Size(46, 20),
+          side: const BorderSide(color: Color(0xffE94057), width: 1),
+          fixedSize: const Size(46, 20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
             fontFamily: "Mulish",
             fontWeight: FontWeight.w600,
             color: Color(0xffE94057)),

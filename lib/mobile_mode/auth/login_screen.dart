@@ -20,8 +20,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
@@ -57,14 +57,16 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: _isLoading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : SaveButton(
                       title: "Login",
                       onTap: () async {
                         if (_emailController.text.isEmpty ||
                             _passwordController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Email or Password is Required")));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text("Email or Password is Required")));
                         } else {
                           setState(() {
                             _isLoading = true;
@@ -107,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (builder) =>
-                                      ForgotPasswordMobile()));
+                                      const ForgotPasswordMobile()));
                         },
                         child: Text(
                           "Forgot Password",
@@ -125,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (builder) => SignUpAccountMobile()));
+                        builder: (builder) => const SignUpAccountMobile()));
               },
               child: Text.rich(
                 TextSpan(
@@ -161,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
 class CheckMobile extends StatelessWidget {
   final String uid;
 
-  CheckMobile({required this.uid});
+  const CheckMobile({super.key, required this.uid});
 
   Future<bool> _CheckMobile() async {
     DocumentSnapshot userDoc =
@@ -186,7 +188,7 @@ class CheckMobile extends StatelessWidget {
           } else if (snapshot.data == true) {
             return MainDashboard();
           } else {
-            return SubscriptionPageMobile();
+            return const SubscriptionPageMobile();
           }
         },
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-final colorWhite = Colors.white;
-final textformColor = Color(0xff6C757D);
-final textformFillColor = Color(0xffF6F7F9);
-final mainBtnColor = Colors.blue;
-final mobileBackgroundColor = Color(0xff000080);
+const colorWhite = Colors.white;
+final textformColor = const Color(0xff6C757D);
+final textformFillColor = const Color(0xffF6F7F9);
+const mainBtnColor = Colors.blue;
+final mobileBackgroundColor = const Color(0xff000080);

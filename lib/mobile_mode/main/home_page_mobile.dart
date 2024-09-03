@@ -39,7 +39,7 @@ class _HomePageMobileState extends State<HomePageMobile> {
     } else if (startDateController.text.isEmpty ||
         endDateController.text.isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Date is Required")));
+          .showSnackBar(const SnackBar(content: Text("Date is Required")));
     } else {
       final String url =
           "https://fixturesbetween-7qvbnkwoka-uc.a.run.app/?path=football/fixtures/between/${DateFormat('yyyy-MM-dd').format(selectedStartDate!)}/${DateFormat('yyyy-MM-dd').format(selectedEndDate!)}?include=predictions;participants;league;scores";
@@ -76,7 +76,7 @@ class _HomePageMobileState extends State<HomePageMobile> {
               width: 400,
               height: 530, // Increased height to accommodate new button
               child: Card(
-                color: Color(0xff000080),
+                color: const Color(0xff000080),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -194,7 +194,8 @@ class _HomePageMobileState extends State<HomePageMobile> {
 class FixturesScreenMobile extends StatefulWidget {
   final dynamic fixturesData;
 
-  FixturesScreenMobile({
+  const FixturesScreenMobile({
+    super.key,
     required this.fixturesData,
   });
 
@@ -211,14 +212,14 @@ class _FixturesScreenMobileState extends State<FixturesScreenMobile> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("SportWave"),
+        title: const Text("SportWave"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height / 1,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: ListView.builder(
                 itemCount: itemCount,
                 itemBuilder: (context, index) {
@@ -269,7 +270,7 @@ class _FixturesScreenMobileState extends State<FixturesScreenMobile> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Text(
+                                    const Text(
                                       "VS",
                                     ),
                                     const SizedBox(
@@ -315,7 +316,7 @@ class _FixturesScreenMobileState extends State<FixturesScreenMobile> {
 class FixtureDetailsScreen extends StatefulWidget {
   final dynamic fixtureData;
 
-  FixtureDetailsScreen({required this.fixtureData});
+  const FixtureDetailsScreen({super.key, required this.fixtureData});
 
   @override
   _FixtureDetailsScreenState createState() => _FixtureDetailsScreenState();
@@ -445,10 +446,12 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (builder) => GenerateApp()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => const GenerateApp()));
               },
-              child: Text("Gernate"))
+              child: const Text("Gernate"))
         ],
         title: Text(
           "${widget.fixtureData['participants'][0]['name']} vs ${widget.fixtureData['participants'][1]['name']}",
@@ -456,7 +459,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -491,8 +494,8 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "Full Time Result",
@@ -507,7 +510,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                       children: [
                         Column(
                           children: [
-                            Text("Home"),
+                            const Text("Home"),
                             Text(
                               "${homeAwayDrawPredictions['home']}%",
                             ),
@@ -515,7 +518,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                         Column(
                           children: [
-                            Text("Draw"),
+                            const Text("Draw"),
                             Text(
                               "${homeAwayDrawPredictions['draw']}%",
                             ),
@@ -523,7 +526,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                         Column(
                           children: [
-                            Text("Away"),
+                            const Text("Away"),
                             Text(
                               "${homeAwayDrawPredictions['away']}%",
                             ),
@@ -531,11 +534,11 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                       ],
                     )
-                  : Text(
+                  : const Text(
                       "No Prediction Found",
                     ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "Both Teams To Score",
@@ -550,7 +553,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                       children: [
                         Column(
                           children: [
-                            Text("Yes"),
+                            const Text("Yes"),
                             Text(
                               "${bothTeamsToScorePrediction['yes']}%",
                             ),
@@ -558,7 +561,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                         Column(
                           children: [
-                            Text("No"),
+                            const Text("No"),
                             Text(
                               "${bothTeamsToScorePrediction['no']}%",
                             ),
@@ -567,7 +570,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         bothTeamsToScorePrediction.containsKey('equal')
                             ? Column(
                                 children: [
-                                  Text("Equal"),
+                                  const Text("Equal"),
                                   Text(
                                     "${bothTeamsToScorePrediction['equal']}%",
                                   ),
@@ -576,11 +579,11 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                             : Container(),
                       ],
                     )
-                  : Text(
+                  : const Text(
                       "No Prediction Found",
                     ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "Over 2.5 Goals",
@@ -595,7 +598,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                       children: [
                         Column(
                           children: [
-                            Text("Yes"),
+                            const Text("Yes"),
                             Text(
                               "${overgoals['yes']}%",
                             ),
@@ -603,7 +606,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                         Column(
                           children: [
-                            Text("No"),
+                            const Text("No"),
                             Text(
                               "${overgoals['no']}%",
                             ),
@@ -611,11 +614,11 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                       ],
                     )
-                  : Text(
+                  : const Text(
                       "No Prediction Found",
                     ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
                     "Over/Under 1.5",
@@ -630,7 +633,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                       children: [
                         Column(
                           children: [
-                            Text("Yes"),
+                            const Text("Yes"),
                             Text(
                               "${homeTeam['yes']}%",
                             ),
@@ -638,7 +641,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                         Column(
                           children: [
-                            Text("No"),
+                            const Text("No"),
                             Text(
                               "${homeTeam['no']}%",
                             ),
@@ -646,7 +649,7 @@ class _FixtureDetailsScreenState extends State<FixtureDetailsScreen> {
                         ),
                       ],
                     )
-                  : Text(
+                  : const Text(
                       "No Prediction Found",
                     ),
             ],

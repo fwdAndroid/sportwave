@@ -22,12 +22,14 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
 
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (builder) => LoginScreen()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => const LoginScreen()));
               },
-              title: Text("Logout"),
-              leading: Icon(Icons.logout),
-              trailing: Icon(Icons.arrow_forward_ios),
+              title: const Text("Logout"),
+              leading: const Icon(Icons.logout),
+              trailing: const Icon(Icons.arrow_forward_ios),
             ),
           )
         ],

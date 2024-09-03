@@ -22,7 +22,7 @@ class SaveButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onTap,
           style: ElevatedButton.styleFrom(
-              fixedSize: Size(270, 49),
+              fixedSize: const Size(270, 49),
               backgroundColor: Colors.transparent,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12))),
@@ -50,13 +50,13 @@ class OutlineButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onTap,
       style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Color(0xffE94057), width: 1),
-          fixedSize: Size(46, 20),
+          side: const BorderSide(color: Color(0xffE94057), width: 1),
+          fixedSize: const Size(46, 20),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
             fontFamily: "Mulish",
             fontWeight: FontWeight.w600,
             color: Color(0xffE94057)),
@@ -69,23 +69,23 @@ class DefaultButton extends StatelessWidget {
   final String text;
   final VoidCallback press;
   const DefaultButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.press,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(25),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
           onPressed: press,
           child: Text(
             text.toUpperCase(),
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),

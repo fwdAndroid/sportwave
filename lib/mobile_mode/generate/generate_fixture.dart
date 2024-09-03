@@ -6,8 +6,8 @@ class GenerateFixture extends StatefulWidget {
   final dynamic fixturesData;
   final int numberOfResponses;
 
-  GenerateFixture(
-      {required this.fixturesData, required this.numberOfResponses});
+  const GenerateFixture(
+      {super.key, required this.fixturesData, required this.numberOfResponses});
 
   @override
   State<GenerateFixture> createState() => _GenerateFixtureState();
@@ -24,14 +24,14 @@ class _GenerateFixtureState extends State<GenerateFixture> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("SportWave"),
+        title: const Text("SportWave"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
               height: MediaQuery.of(context).size.height / 1,
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: ListView.builder(
                 itemCount: itemCount,
                 itemBuilder: (context, index) {
@@ -82,7 +82,7 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    Text(
+                                    const Text(
                                       "VS",
                                     ),
                                     const SizedBox(

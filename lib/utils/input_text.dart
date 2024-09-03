@@ -133,8 +133,8 @@ class _InputTextState extends State<InputText> {
       height: 1.4);
 
   errorTextStyle(context) =>
-      TextStyle(fontSize: 10, fontWeight: FontWeight.w500, height: 1.4);
+      const TextStyle(fontSize: 10, fontWeight: FontWeight.w500, height: 1.4);
 
   textFieldTextStyle(context) =>
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w500, height: 1.4);
+      const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, height: 1.4);
 }

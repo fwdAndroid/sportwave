@@ -14,7 +14,7 @@ class TextFormInputField extends StatelessWidget {
   final TextInputType textInputType;
 
   TextFormInputField(
-      {Key? key,
+      {super.key,
       required this.controller,
       this.isPass = false,
       this.readOnly = false,
@@ -23,12 +23,11 @@ class TextFormInputField extends StatelessWidget {
       this.preFixICon,
       this.tap,
       required this.hintText,
-      required this.textInputType})
-      : super(key: key);
+      required this.textInputType});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 343,
       height: 60,
       child: TextField(
@@ -45,7 +44,7 @@ class TextFormInputField extends StatelessWidget {
           hintStyle: GoogleFonts.nunitoSans(fontSize: 16),
           border: InputBorder.none,
           filled: true,
-          contentPadding: EdgeInsets.all(8),
+          contentPadding: const EdgeInsets.all(8),
         ),
         keyboardType: textInputType,
         controller: controller,
