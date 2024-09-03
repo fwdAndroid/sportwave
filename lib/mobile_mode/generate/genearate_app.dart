@@ -38,10 +38,10 @@ class _GenerateAppState extends State<GenerateApp> {
     } else if (startDateController.text.isEmpty ||
         endDateController.text.isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Date is Required")));
+          .showSnackBar(SnackBar(content: Text("Date is Required")));
     } else {
       final String url =
-          "https://fixturesbetween-7qvbnkwoka-uc.a.run.app/?path=football/fixtures/between/${DateFormat('yyyy-MM-dd').format(selectedStartDate!)}/${DateFormat('yyyy-MM-dd').format(selectedEndDate!)}?include=predictions;participants;league;scores";
+          "https://fixturesbetween-7qvbnkwoka-uc.a.run.app/?path=football/fixtures/between/${DateFormat('yyyy-MM-dd').format(selectedStartDate!)}/${DateFormat('yyyy-MM-dd').format(selectedEndDate!)}?include=predictions;participants;league";
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
@@ -76,7 +76,7 @@ class _GenerateAppState extends State<GenerateApp> {
               width: 400,
               height: 530, // Increased height to accommodate new button
               child: Card(
-                color: const Color(0xff000080),
+                color: Color(0xff000080),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -163,11 +163,11 @@ class _GenerateAppState extends State<GenerateApp> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text("Events"),
+                                  title: Text("Events"),
                                   content: TextField(
                                     controller: numberOfResponsesController,
                                     keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                         hintText:
                                             "Enter Number of Events of Selected Date"),
                                   ),
@@ -186,19 +186,19 @@ class _GenerateAppState extends State<GenerateApp> {
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
-                                            const SnackBar(
+                                            SnackBar(
                                                 content: Text(
                                                     "Please enter a valid number (1-20)")),
                                           );
                                         }
                                       },
-                                      child: const Text("OK"),
+                                      child: Text("OK"),
                                     ),
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: const Text("Cancel"),
+                                      child: Text("Cancel"),
                                     ),
                                   ],
                                 );
