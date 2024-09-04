@@ -10,20 +10,18 @@ class GenernateDetailsScreen extends StatefulWidget {
 }
 
 class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
-  late Map<String, dynamic> homeAwayDrawPredictions;
   late Map<String, dynamic> bothTeamsToScorePrediction;
   late Map<String, dynamic> overgoals;
   late Map<String, dynamic> homeTeam;
   @override
   void initState() {
     super.initState();
-    homeAwayDrawPredictions =
-        getHomeAwayDrawPredictions(widget.fixtureData['predictions']);
+
     bothTeamsToScorePrediction = getSpecificPrediction(
         widget.fixtureData['predictions'],
-        1684); // Type ID for "Both Teams To Score"
-    overgoals = getOverGoals(widget.fixtureData['predictions'], 1685);
-    homeTeam = getHomeTeam(widget.fixtureData['predictions'], 1683);
+        231); // Type ID for "Both Teams To Score"
+    overgoals = getOverGoals(widget.fixtureData['predictions'], 235);
+    homeTeam = getHomeTeam(widget.fixtureData['predictions'], 234);
   }
 
   Map<String, dynamic> getHomeAwayDrawPredictions(List<dynamic> predictions) {
@@ -187,6 +185,41 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                     "Result: ${widget.fixtureData['result_info']}",
                   ),
                 ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Both Team To Score",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              bothTeamsToScorePrediction.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text("Yes"),
+                            Text(
+                              "${bothTeamsToScorePrediction['yes']}%",
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("No"),
+                            Text(
+                              "${bothTeamsToScorePrediction['no']}%",
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Text(
+                      "No Prediction Found",
+                    ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Center(
