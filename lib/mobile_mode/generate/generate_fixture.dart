@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:sportwave/mobile_mode/generate/generate_detail_screen..dart';
 
 class GenerateFixture extends StatefulWidget {
-  final dynamic fixturesData;
+  final dynamic fixturesData; // Assuming fixturesData is a dynamic type.
   final int numberOfResponses;
 
   GenerateFixture(
@@ -16,11 +14,15 @@ class GenerateFixture extends StatefulWidget {
 class _GenerateFixtureState extends State<GenerateFixture> {
   @override
   Widget build(BuildContext context) {
-    int itemCount = widget.fixturesData['data'].length;
+    // Ensure the data field is a list
+    final List<dynamic> fixturesList = widget.fixturesData['data'] ?? [];
+
+    int itemCount = fixturesList.length;
     // Limit the item count to the selected number of responses
     if (itemCount > widget.numberOfResponses) {
       itemCount = widget.numberOfResponses;
     }
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -35,86 +37,78 @@ class _GenerateFixtureState extends State<GenerateFixture> {
               child: ListView.builder(
                 itemCount: itemCount,
                 itemBuilder: (context, index) {
-                  final fixture = widget.fixturesData['data'][index];
+                  final fixture = fixturesList[index]; // Access list by index
+
                   // Extract scores dynamically
                   int homeScore = 0;
                   int awayScore = 0;
-                  if (fixture['scores'] != null) {
+                  if (fixture['scores'] != null && fixture['scores'] is List) {
                     for (var score in fixture['scores']) {
-                      if (score['score']['participant'] == 'home') {
-                        homeScore = score['score']['goals'];
-                      } else if (score['score']['participant'] == 'away') {
-                        awayScore = score['score']['goals'];
+                      if (score['participant'] == 'home') {
+                        homeScore = score['goals'] ?? 0;
+                      } else if (score['participant'] == 'away') {
+                        awayScore = score['goals'] ?? 0;
                       }
                     }
                   }
-
+                  final List<dynamic> predictions =
+                      fixture['predictions'] ?? [];
+                  final yes = predictions[index]['predictions']['yes'] ?? 'N/A';
+                  final no = predictions[index]['predictions']['no'] ?? 'N/A';
                   return Card(
-                      color: Colors.white,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GenernateDetailsScreen(
-                                fixtureData: fixture,
+                    color: Colors.white,
+                    child: GestureDetector(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(
+                                  "${fixture['participants'][0]['image_path']}",
+                                  height: 80,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.network(
-                                    "${fixture['participants'][0]['image_path']}",
-                                    height: 80,
+                              Column(
+                                children: [
+                                  Text(
+                                    "${fixture['participants'][0]['name']}",
                                   ),
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "${fixture['participants'][0]['name']}",
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "VS",
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "${fixture['participants'][1]['name']}",
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.network(
-                                      "${fixture['participants'][1]['image_path']}",
-                                      height: 80),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              " $homeScore - $awayScore",
-                            ),
-                            if (fixture['date'] != null)
-                              Text(
-                                "- ${DateFormat('yyyy-MM-dd').format(DateTime.parse(fixture['date']))}",
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "VS",
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "${fixture['participants'][1]['name']}",
+                                  ),
+                                ],
                               ),
-                            if (fixture['result_info'] != null)
-                              Text(
-                                "Result: ${fixture['result_info']}",
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(
+                                  "${fixture['participants'][1]['image_path']}",
+                                  height: 80,
+                                ),
                               ),
-                          ],
-                        ),
-                      ));
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Yes: $yes%"),
+                              Text("No: $no%"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 },
               ),
             ),

@@ -45,16 +45,38 @@ class _GenerateAppState extends State<GenerateApp> {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        print("API response: ${response.body}");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => GenerateFixture(
-              fixturesData: jsonDecode(response.body),
-              numberOfResponses: numberOfResponses,
+        final decodedResponse = jsonDecode(response.body);
+
+        // Ensure the 'data' key contains a list
+        if (decodedResponse['data'] is List) {
+          final List<dynamic> fixturesList = decodedResponse['data'];
+
+          // Filter the predictions where "yes" is equal to or greater than 80
+          final filteredData = fixturesList.map((fixture) {
+            if (fixture['predictions'] is List) {
+              fixture['predictions'] =
+                  fixture['predictions'].where((prediction) {
+                final yesValue = prediction['predictions']['yes'];
+                // Check if yesValue is not null and is a number, then filter
+                return yesValue != null && yesValue is num && yesValue >= 80;
+              }).toList();
+            }
+            return fixture;
+          }).toList();
+
+          // Navigate to the next screen with filtered data
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GenerateFixture(
+                fixturesData: {'data': filteredData},
+                numberOfResponses: numberOfResponses,
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          print("Unexpected data format. 'data' key is not a list.");
+        }
       } else {
         print("API request failed with status code: ${response.statusCode}");
       }

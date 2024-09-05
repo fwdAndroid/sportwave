@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 
-class GenernateDetailsScreen extends StatefulWidget {
+class GestureResultEight extends StatefulWidget {
   final dynamic fixtureData;
 
-  const GenernateDetailsScreen({super.key, required this.fixtureData});
+  const GestureResultEight({super.key, required this.fixtureData});
 
   @override
-  _GenernateDetailsScreenState createState() => _GenernateDetailsScreenState();
+  State<GestureResultEight> createState() => _GestureResultEightState();
 }
 
-class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
+class _GestureResultEightState extends State<GestureResultEight> {
+  late Map<String, dynamic> bothTeamsToScorePrediction;
+  late Map<String, dynamic> overgoals;
   late Map<String, dynamic> homeTeam;
   @override
   void initState() {
     super.initState();
 
+    bothTeamsToScorePrediction = getSpecificPrediction(
+        widget.fixtureData['predictions'],
+        231); // Type ID for "Both Teams To Score"
+    overgoals = getOverGoals(widget.fixtureData['predictions'], 235);
     homeTeam = getHomeTeam(widget.fixtureData['predictions'], 234);
   }
 
@@ -31,6 +37,15 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
 
   Map<String, dynamic> getSpecificPrediction(
       List<dynamic> predictions, int typeId) {
+    for (var prediction in predictions) {
+      if (prediction['type_id'] == typeId) {
+        return prediction['predictions'];
+      }
+    }
+    return {};
+  }
+
+  Map<String, dynamic> getOverGoals(List<dynamic> predictions, int typeId) {
     for (var prediction in predictions) {
       if (prediction['type_id'] == typeId) {
         return prediction['predictions'];
@@ -158,6 +173,57 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                 padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
+                    "Full Time Result",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              if (widget.fixtureData['result_info'] != null)
+                Center(
+                  child: Text(
+                    "Result: ${widget.fixtureData['result_info']}",
+                  ),
+                ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Both Team To Score",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              bothTeamsToScorePrediction.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text("Yes"),
+                            Text(
+                              "${bothTeamsToScorePrediction['yes']}%",
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("No"),
+                            Text(
+                              "${bothTeamsToScorePrediction['no']}%",
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Text(
+                      "No Prediction Found",
+                    ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
                     "Over/Under 1.5",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
@@ -181,6 +247,41 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                             const Text("No"),
                             Text(
                               "${homeTeam['no']}%",
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Text(
+                      "No Prediction Found",
+                    ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Over 2.5 Goals",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              overgoals.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text("Yes"),
+                            Text(
+                              "${overgoals['yes']}%",
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("No"),
+                            Text(
+                              "${overgoals['no']}%",
                             ),
                           ],
                         ),
