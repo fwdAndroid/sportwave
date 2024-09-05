@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sportwave/mobile_mode/generate/generate_fixture.dart';
+import 'package:sportwave/mobile_mode/home_page_response/home_fixture.dart';
 import 'package:sportwave/mobile_mode/widgets/button.dart';
 
 import 'package:sportwave/utils/colors.dart';
@@ -46,13 +47,25 @@ class _HomePageMobileState extends State<HomePageMobile> {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        print("API response: ${response.body}");
+        // Convert the response body to JSON
+        final decodedResponse = jsonDecode(response.body);
+
+        // Pretty print the JSON in chunks to avoid truncation
+        const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+        String prettyPrintedJson = encoder.convert(decodedResponse);
+
+        // Print the response in chunks of 800 characters
+        final pattern =
+            RegExp('.{1,800}'); // 800 is a safe limit for Flutter's print()
+        pattern
+            .allMatches(prettyPrintedJson)
+            .forEach((match) => print(match.group(0)));
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => GenerateFixture(
-              numberOfResponses: 100,
-              fixturesData: jsonDecode(response.body),
+            builder: (context) => HomeFixture(
+              fixturesData: decodedResponse,
             ),
           ),
         );
