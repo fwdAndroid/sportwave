@@ -53,14 +53,15 @@ class _GenerateAppState extends State<GenerateApp> {
 
           // Filter the predictions where "yes" is equal to or greater than 80
           final filteredData = fixturesList.map((fixture) {
-            if (fixture['predictions'] is List) {
-              fixture['predictions'] =
-                  fixture['predictions'].where((prediction) {
-                final yesValue = prediction['predictions']['yes'];
-                // Check if yesValue is not null and is a number, then filter
-                return yesValue != null && yesValue is num && yesValue >= 80;
-              }).toList();
-            }
+            fixture['predictions'] = fixture['predictions'].where((prediction) {
+              final yesValue = prediction['predictions']['yes'];
+              final typeId = prediction['type_id'];
+              // Check if yesValue is not null, is a number, and typeId is 234
+              return typeId == 234 &&
+                  yesValue != null &&
+                  yesValue is num &&
+                  yesValue >= 80;
+            }).toList();
             return fixture;
           }).toList();
 

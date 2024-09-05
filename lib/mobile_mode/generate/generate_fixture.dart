@@ -27,7 +27,7 @@ class _GenerateFixtureState extends State<GenerateFixture> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("The Game Before The Game "),
+        title: Text("The Game Before The Game"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -56,8 +56,6 @@ class _GenerateFixtureState extends State<GenerateFixture> {
 
                   final List<dynamic> predictions =
                       fixture['predictions'] ?? [];
-
-                  // Debug print to check predictions data
 
                   // Initialize counts
                   double yesPercentage = 0.0;
@@ -89,66 +87,83 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                                     fixtureData: fixture,
                                   )));
                     },
-                    child: Card(
-                      color: Colors.white,
-                      child: GestureDetector(
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
+                    child: yesPercentage >= 80
+                        ? Card(
+                            color: Colors.white,
+                            child: GestureDetector(
+                              child: Column(
                                 children: [
-                                  CircleAvatar(
-                                    backgroundImage: NetworkImage(
-                                        fixture['league']['image_path']),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundImage: NetworkImage(
+                                              fixture['league']['image_path']),
+                                        ),
+                                        Text(" ${fixture['league']['name']}"),
+                                      ],
+                                    ),
                                   ),
-                                  Text(" ${fixture['league']['name']}"),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (fixture['league'] != null)
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Image.network(
+                                            "${fixture['participants'][0]['image_path']}",
+                                            height: 80,
+                                          ),
+                                        ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "${fixture['participants'][0]['name']}",
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "VS",
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "${fixture['participants'][1]['name']}",
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Image.network(
+                                          "${fixture['participants'][1]['image_path']}",
+                                          height: 80,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Show Yes percentage only if it's >= 80
+                                        if (yesPercentage >= 80)
+                                          Text(
+                                              "Yes: ${yesPercentage.toStringAsFixed(1)}%"),
+                                        Text(
+                                            "No: ${noPercentage.toStringAsFixed(1)}%"),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                if (fixture['league'] != null)
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.network(
-                                      "${fixture['participants'][0]['image_path']}",
-                                      height: 80,
-                                    ),
-                                  ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "${fixture['participants'][0]['name']}",
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "VS",
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "${fixture['participants'][1]['name']}",
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.network(
-                                    "${fixture['participants'][1]['image_path']}",
-                                    height: 80,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          )
+                        : SizedBox.shrink(),
                   );
                 },
               ),
