@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sportwave/mobile_mode/generate/gesture_result_eight.dart';
 
 class GenerateFixture extends StatefulWidget {
   final dynamic fixturesData; // Assuming fixturesData is a dynamic type.
@@ -79,75 +80,73 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                     noPercentage = totalNo / predictions.length;
                   }
 
-                  return Card(
-                    color: Colors.white,
-                    child: GestureDetector(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      fixture['league']['image_path']),
-                                ),
-                                Text(" ${fixture['league']['name']}"),
-                              ],
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (builder) => GestureResultEight(
+                                    fixtureData: fixture,
+                                  )));
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      child: GestureDetector(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        fixture['league']['image_path']),
+                                  ),
+                                  Text(" ${fixture['league']['name']}"),
+                                ],
+                              ),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              if (fixture['league'] != null)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                if (fixture['league'] != null)
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.network(
+                                      "${fixture['participants'][0]['image_path']}",
+                                      height: 80,
+                                    ),
+                                  ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "${fixture['participants'][0]['name']}",
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "VS",
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "${fixture['participants'][1]['name']}",
+                                    ),
+                                  ],
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Image.network(
-                                    "${fixture['participants'][0]['image_path']}",
+                                    "${fixture['participants'][1]['image_path']}",
                                     height: 80,
                                   ),
                                 ),
-                              Column(
-                                children: [
-                                  Text(
-                                    "${fixture['participants'][0]['name']}",
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "VS",
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "${fixture['participants'][1]['name']}",
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.network(
-                                  "${fixture['participants'][1]['image_path']}",
-                                  height: 80,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text("Over 1.5"),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    "Yes: ${yesPercentage.toStringAsFixed(1)}%"),
-                                Text("No: ${noPercentage.toStringAsFixed(1)}%"),
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );

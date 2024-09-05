@@ -173,57 +173,6 @@ class _GestureResultEightState extends State<GestureResultEight> {
                 padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    "Full Time Result",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              if (widget.fixtureData['result_info'] != null)
-                Center(
-                  child: Text(
-                    "Result: ${widget.fixtureData['result_info']}",
-                  ),
-                ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    "Both Team To Score",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              bothTeamsToScorePrediction.isNotEmpty
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            const Text("Yes"),
-                            Text(
-                              "${bothTeamsToScorePrediction['yes']}%",
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            const Text("No"),
-                            Text(
-                              "${bothTeamsToScorePrediction['no']}%",
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  : const Text(
-                      "No Prediction Found",
-                    ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
                     "Over/Under 1.5",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
@@ -252,28 +201,14 @@ class _GestureResultEightState extends State<GestureResultEight> {
                         ),
                       ],
                     )
-                  : const Text(
-                      "No Prediction Found",
-                    ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    "Over 2.5 Goals",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              overgoals.isNotEmpty
-                  ? Row(
+                  : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
                           children: [
                             const Text("Yes"),
                             Text(
-                              "${overgoals['yes']}%",
+                              "${89}%",
                             ),
                           ],
                         ),
@@ -281,15 +216,12 @@ class _GestureResultEightState extends State<GestureResultEight> {
                           children: [
                             const Text("No"),
                             Text(
-                              "${overgoals['no']}%",
+                              "${11}%",
                             ),
                           ],
                         ),
                       ],
                     )
-                  : const Text(
-                      "No Prediction Found",
-                    ),
             ],
           ),
         ),
