@@ -4,8 +4,12 @@ import 'package:sportwave/mobile_mode/generate/generate_detail_screen..dart';
 
 class HomeFixture extends StatefulWidget {
   final dynamic fixturesData;
+  String startDate;
+  String endDate;
 
   HomeFixture({
+    required this.startDate,
+    required this.endDate,
     required this.fixturesData,
   });
 
@@ -14,8 +18,56 @@ class HomeFixture extends StatefulWidget {
 }
 
 class _HomeFixtureState extends State<HomeFixture> {
+  int totalPredictions = 0;
+  int winningPredictions = 0;
+  double winningPercentage = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    calculatePredictionStats(widget.fixturesData);
+  }
+
+  void calculatePredictionStats(dynamic fixturesData) {
+    totalPredictions = 0;
+    winningPredictions = 0;
+
+    if (fixturesData != null && fixturesData['data'] != null) {
+      for (var fixture in fixturesData['data']) {
+        totalPredictions++;
+        winningPredictions += calculateWinningPredictions(fixture);
+      }
+      if (totalPredictions > 0) {
+        winningPercentage = (winningPredictions / totalPredictions) * 100;
+      }
+    }
+  }
+
+  int calculateWinningPredictions(dynamic fixture) {
+    int winningPredictions = 0;
+
+    // Example logic: count as winning if home prediction is greater than away
+    if (fixture['predictions'] != null) {
+      for (var prediction in fixture['predictions']) {
+        if (prediction['type_id'] == 233) {
+          if (prediction['predictions']['home'] >
+              prediction['predictions']['away']) {
+            winningPredictions++;
+          } else if (prediction['predictions']['away'] >
+              prediction['predictions']['home']) {
+            winningPredictions++;
+          }
+        }
+      }
+    }
+
+    return winningPredictions;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Limit the item count to the selected number of responses
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -24,6 +76,10 @@ class _HomeFixtureState extends State<HomeFixture> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Text("Total Predictions: $totalPredictions"),
+            Text("Winning Predictions: $winningPredictions"),
+            Text(
+                "Winning Percentage: ${winningPercentage.toStringAsFixed(2)}%"),
             Container(
               height: MediaQuery.of(context).size.height / 1,
               padding: EdgeInsets.all(16.0),

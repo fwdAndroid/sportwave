@@ -47,25 +47,14 @@ class _HomePageMobileState extends State<HomePageMobile> {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        // Convert the response body to JSON
-        final decodedResponse = jsonDecode(response.body);
-
-        // Pretty print the JSON in chunks to avoid truncation
-        const JsonEncoder encoder = JsonEncoder.withIndent('  ');
-        String prettyPrintedJson = encoder.convert(decodedResponse);
-
-        // Print the response in chunks of 800 characters
-        final pattern =
-            RegExp('.{1,800}'); // 800 is a safe limit for Flutter's print()
-        pattern
-            .allMatches(prettyPrintedJson)
-            .forEach((match) => print(match.group(0)));
-
+        print("API response: ${response}");
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => HomeFixture(
-              fixturesData: decodedResponse,
+              fixturesData: jsonDecode(response.body),
+              startDate: startDateController.text,
+              endDate: endDateController.text,
             ),
           ),
         );
