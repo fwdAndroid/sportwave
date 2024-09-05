@@ -26,13 +26,14 @@ class _GenerateFixtureState extends State<GenerateFixture> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("SportWave"),
+        title: Text("The Game Before The Game "),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              height: MediaQuery.of(context).size.height / 1,
+              height: MediaQuery.of(context).size.height /
+                  1, // Adjust height as needed
               padding: EdgeInsets.all(16.0),
               child: ListView.builder(
                 itemCount: itemCount,
@@ -51,25 +52,61 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                       }
                     }
                   }
+
                   final List<dynamic> predictions =
                       fixture['predictions'] ?? [];
-                  final yes = predictions[index]['predictions']['yes'] ?? 'N/A';
-                  final no = predictions[index]['predictions']['no'] ?? 'N/A';
+
+                  // Debug print to check predictions data
+
+                  // Initialize counts
+                  double yesPercentage = 0.0;
+                  double noPercentage = 0.0;
+
+                  // Calculate yes and no percentages
+                  if (predictions.isNotEmpty) {
+                    // Sum up percentages from all predictions
+                    double totalYes = 0.0;
+                    double totalNo = 0.0;
+
+                    for (var prediction in predictions) {
+                      final predictionMap = prediction['predictions'] ?? {};
+                      totalYes += (predictionMap['yes'] ?? 0.0);
+                      totalNo += (predictionMap['no'] ?? 0.0);
+                    }
+
+                    // Calculate the average percentages
+                    yesPercentage = totalYes / predictions.length;
+                    noPercentage = totalNo / predictions.length;
+                  }
+
                   return Card(
                     color: Colors.white,
                     child: GestureDetector(
                       child: Column(
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                      fixture['league']['image_path']),
+                                ),
+                                Text(" ${fixture['league']['name']}"),
+                              ],
+                            ),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Image.network(
-                                  "${fixture['participants'][0]['image_path']}",
-                                  height: 80,
+                              if (fixture['league'] != null)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.network(
+                                    "${fixture['participants'][0]['image_path']}",
+                                    height: 80,
+                                  ),
                                 ),
-                              ),
                               Column(
                                 children: [
                                   Text(
@@ -98,12 +135,17 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                               ),
                             ],
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Yes: $yes%"),
-                              Text("No: $no%"),
-                            ],
+                          Text("Over 1.5"),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    "Yes: ${yesPercentage.toStringAsFixed(1)}%"),
+                                Text("No: ${noPercentage.toStringAsFixed(1)}%"),
+                              ],
+                            ),
                           ),
                         ],
                       ),

@@ -71,7 +71,7 @@ class _HomeFixtureState extends State<HomeFixture> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("SportWave"),
+        title: Text("The Game Before The Game "),
       ),
       body: SingleChildScrollView(
         child: Column(
