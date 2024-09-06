@@ -29,7 +29,7 @@ class _SubscriptionOneState extends State<SubscriptionOne> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "Three Month Subscription to get free access of Subscription in just 50 Euro",
+              "One Month Subscription to get free access of Subscription in just 2s0 Euro",
               textAlign: TextAlign.center,
             ),
           ),
@@ -76,7 +76,7 @@ class _SubscriptionOneState extends State<SubscriptionOne> {
                     });
                   },
                   child: Text(
-                    "Pay \$50",
+                    "Pay \$20",
                     style: TextStyle(color: colorwhite),
                   ),
                 ),
