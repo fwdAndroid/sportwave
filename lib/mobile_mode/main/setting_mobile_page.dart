@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sportwave/mobile_mode/auth/login_screen.dart';
@@ -29,6 +30,26 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
               },
               title: const Text("Logout"),
               leading: const Icon(Icons.logout),
+              trailing: const Icon(Icons.arrow_forward_ios),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListTile(
+              onTap: () async {
+                await FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .update({"isPaid": true}).then((onValue) async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (builder) => const LoginScreen()));
+                });
+              },
+              title: const Text("Cancel Subscription"),
+              leading: const Icon(Icons.subscript),
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
           )
