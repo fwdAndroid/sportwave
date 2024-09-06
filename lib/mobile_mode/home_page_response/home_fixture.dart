@@ -4,12 +4,8 @@ import 'package:sportwave/mobile_mode/generate/generate_detail_screen..dart';
 
 class HomeFixture extends StatefulWidget {
   final dynamic fixturesData;
-  String startDate;
-  String endDate;
 
   HomeFixture({
-    required this.startDate,
-    required this.endDate,
     required this.fixturesData,
   });
 

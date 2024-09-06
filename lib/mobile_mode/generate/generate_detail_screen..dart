@@ -11,11 +11,17 @@ class GenernateDetailsScreen extends StatefulWidget {
 
 class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
   late Map<String, dynamic> homeTeam;
+  late Map<String, dynamic> bothTeamToScore;
+  late Map<String, dynamic> overgoal;
+  @override
   @override
   void initState() {
     super.initState();
 
     homeTeam = getHomeTeam(widget.fixtureData['predictions'], 234);
+    bothTeamToScore =
+        getbothTeamToScore(widget.fixtureData['predictions'], 231);
+    overgoal = getOverGoal(widget.fixtureData['predictions'], 235);
   }
 
   Map<String, dynamic> getHomeAwayDrawPredictions(List<dynamic> predictions) {
@@ -40,6 +46,25 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
   }
 
   Map<String, dynamic> getHomeTeam(List<dynamic> predictions, int typeId) {
+    for (var prediction in predictions) {
+      if (prediction['type_id'] == typeId) {
+        return prediction['predictions'];
+      }
+    }
+    return {};
+  }
+
+  Map<String, dynamic> getbothTeamToScore(
+      List<dynamic> predictions, int typeId) {
+    for (var prediction in predictions) {
+      if (prediction['type_id'] == typeId) {
+        return prediction['predictions'];
+      }
+    }
+    return {};
+  }
+
+  Map<String, dynamic> getOverGoal(List<dynamic> predictions, int typeId) {
     for (var prediction in predictions) {
       if (prediction['type_id'] == typeId) {
         return prediction['predictions'];
@@ -158,6 +183,41 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                 padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
+                    "Both Team To Score",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              bothTeamToScore.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text("Yes"),
+                            Text(
+                              "${bothTeamToScore['yes']}%",
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("No"),
+                            Text(
+                              "${bothTeamToScore['no']}%",
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Text(
+                      "No Prediction Found",
+                    ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
                     "Over/Under 1.5",
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
@@ -181,6 +241,41 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                             const Text("No"),
                             Text(
                               "${homeTeam['no']}%",
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Text(
+                      "No Prediction Found",
+                    ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Over/Under 2.5",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              overgoal.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text("Yes"),
+                            Text(
+                              "${overgoal['yes']}%",
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("No"),
+                            Text(
+                              "${overgoal['no']}%",
                             ),
                           ],
                         ),

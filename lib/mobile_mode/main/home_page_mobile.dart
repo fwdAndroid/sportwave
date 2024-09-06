@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sportwave/mobile_mode/generate/generate_fixture.dart';
 import 'package:sportwave/mobile_mode/home_page_response/home_fixture.dart';
 import 'package:sportwave/mobile_mode/widgets/button.dart';
 
@@ -41,26 +40,43 @@ class _HomePageMobileState extends State<HomePageMobile> {
         endDateController.text.isEmpty) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Date is Required")));
-    } else {
+      return;
+    }
+
+    int currentPage = 1;
+    bool hasMore = true;
+    List<dynamic> allFixtures = [];
+
+    while (hasMore) {
       final String url =
-          "https://fixturesbetween-7qvbnkwoka-uc.a.run.app/?path=football/fixtures/between/${DateFormat('yyyy-MM-dd').format(selectedStartDate!)}/${DateFormat('yyyy-MM-dd').format(selectedEndDate!)}?include=predictions;participants;league;scores";
+          "https://fixturesbetween-7qvbnkwoka-uc.a.run.app/?path=football/fixtures/between/${DateFormat('yyyy-MM-dd').format(selectedStartDate!)}/${DateFormat('yyyy-MM-dd').format(selectedEndDate!)}?include=predictions;participants;league;scores&page=$currentPage";
+
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        print("API response: ${response}");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeFixture(
-              fixturesData: jsonDecode(response.body),
-              startDate: startDateController.text,
-              endDate: endDateController.text,
-            ),
-          ),
-        );
+        final decodedResponse = jsonDecode(response.body);
+
+        // Add fixtures from the current page to the list
+        allFixtures.addAll(decodedResponse['data']);
+
+        // Check if there's more data to fetch
+        hasMore = decodedResponse['pagination']['has_more'];
+        currentPage++;
       } else {
         print("API request failed with status code: ${response.statusCode}");
+        break;
       }
+    }
+
+    if (allFixtures.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeFixture(
+            fixturesData: {'data': allFixtures},
+          ),
+        ),
+      );
     }
   }
 
