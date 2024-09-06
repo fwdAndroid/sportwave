@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sportwave/mobile_mode/home_page_response/home_fixture.dart';
 import 'package:sportwave/mobile_mode/widgets/button.dart';
-
 import 'package:sportwave/utils/colors.dart';
 import 'package:sportwave/utils/input_text.dart';
 
@@ -43,6 +41,10 @@ class _HomePageMobileState extends State<HomePageMobile> {
       return;
     }
 
+    setState(() {
+      isLoading = true; // Show loading indicator
+    });
+
     int currentPage = 1;
     bool hasMore = true;
     List<dynamic> allFixtures = [];
@@ -68,6 +70,10 @@ class _HomePageMobileState extends State<HomePageMobile> {
       }
     }
 
+    setState(() {
+      isLoading = false; // Hide loading indicator
+    });
+
     if (allFixtures.isNotEmpty) {
       Navigator.push(
         context,
@@ -83,97 +89,101 @@ class _HomePageMobileState extends State<HomePageMobile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              "assets/logo.png",
-              height: 100,
-            ),
-            SizedBox(
-              width: 400,
-              height: 530, // Increased height to accommodate new button
-              child: Card(
-                color: const Color(0xff000080),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Start Date",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: colorwhite),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/logo.png",
+                height: 100,
+              ),
+              SizedBox(
+                width: 400,
+                height: 530, // Increased height to accommodate new button
+                child: Card(
+                  color: const Color(0xff000080),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Start Date",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: colorwhite),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 9),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InputText(
-                          onTap: () => _selectStartDate(context),
-                          controller: startDateController,
-                          labelText: "23 June 2023",
-                          keyboardType: TextInputType.visiblePassword,
-                          onChanged: (value) {},
-                          onSaved: (val) {},
-                          textInputAction: TextInputAction.done,
-                          isPassword: false,
-                          enabled: true,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "End Date",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: colorwhite),
+                        const SizedBox(height: 9),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InputText(
+                            onTap: () => _selectStartDate(context),
+                            controller: startDateController,
+                            labelText: "23 June 2023",
+                            keyboardType: TextInputType.visiblePassword,
+                            onChanged: (value) {},
+                            onSaved: (val) {},
+                            textInputAction: TextInputAction.done,
+                            isPassword: false,
+                            enabled: true,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 9),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: InputText(
-                          onTap: () => _selectEndDate(context),
-                          controller: endDateController,
-                          labelText: "30 June 2025",
-                          keyboardType: TextInputType.visiblePassword,
-                          onChanged: (value) {},
-                          onSaved: (val) {},
-                          textInputAction: TextInputAction.done,
-                          isPassword: false,
-                          enabled: true,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "End Date",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: colorwhite),
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 9),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SaveButton(
-                          onTap: _fetchFixtures,
-                          title: "Submit",
+                        const SizedBox(height: 9),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InputText(
+                            onTap: () => _selectEndDate(context),
+                            controller: endDateController,
+                            labelText: "30 June 2025",
+                            keyboardType: TextInputType.visiblePassword,
+                            onChanged: (value) {},
+                            onSaved: (val) {},
+                            textInputAction: TextInputAction.done,
+                            isPassword: false,
+                            enabled: true,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 9),
+                        isLoading
+                            ? CircularProgressIndicator() // Show loading indicator while fetching data
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SaveButton(
+                                  onTap: _fetchFixtures,
+                                  title: "Submit",
+                                ),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
