@@ -24,14 +24,13 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
         getbothTeamToScore(widget.fixtureData['predictions'], 231);
     overgoal = getOverGoal(widget.fixtureData['predictions'], 235);
     homeAwayDrawPredictions =
-        getHomeAwayDrawPredictions(widget.fixtureData['predictions']);
+        getHomeAwayDrawPredictions(widget.fixtureData['predictions'], 237);
   }
 
-  Map<String, dynamic> getHomeAwayDrawPredictions(List<dynamic> predictions) {
+  Map<String, dynamic> getHomeAwayDrawPredictions(
+      List<dynamic> predictions, int typeId) {
     for (var prediction in predictions) {
-      if (prediction['predictions'].containsKey('home') &&
-          prediction['predictions'].containsKey('away') &&
-          prediction['predictions'].containsKey('draw')) {
+      if (prediction['type_id'] == typeId) {
         return prediction['predictions'];
       }
     }
