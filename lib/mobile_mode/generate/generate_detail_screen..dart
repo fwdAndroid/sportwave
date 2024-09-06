@@ -14,6 +14,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
   late Map<String, dynamic> bothTeamToScore;
   late Map<String, dynamic> overgoal;
   late Map<String, dynamic> homeAwayDrawPredictions;
+  late Map<String, dynamic> firstHalfScore;
   @override
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
     overgoal = getOverGoal(widget.fixtureData['predictions'], 235);
     homeAwayDrawPredictions =
         getHomeAwayDrawPredictions(widget.fixtureData['predictions'], 237);
+    firstHalfScore = getFirstHalfScore(widget.fixtureData['predictions'], 334);
   }
 
   Map<String, dynamic> getHomeAwayDrawPredictions(
@@ -38,6 +40,16 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
   }
 
   Map<String, dynamic> getHomeTeam(List<dynamic> predictions, int typeId) {
+    for (var prediction in predictions) {
+      if (prediction['type_id'] == typeId) {
+        return prediction['predictions'];
+      }
+    }
+    return {};
+  }
+
+  Map<String, dynamic> getFirstHalfScore(
+      List<dynamic> predictions, int typeId) {
     for (var prediction in predictions) {
       if (prediction['type_id'] == typeId) {
         return prediction['predictions'];
@@ -235,6 +247,41 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                             const Text("No"),
                             Text(
                               "${bothTeamToScore['no']}%",
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : const Text(
+                      "No Prediction Found",
+                    ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "First Half Score Percentage",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              firstHalfScore.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          children: [
+                            const Text("Yes"),
+                            Text(
+                              "${firstHalfScore['yes']}%",
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            const Text("No"),
+                            Text(
+                              "${firstHalfScore['no']}%",
                             ),
                           ],
                         ),
