@@ -13,6 +13,7 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
   late Map<String, dynamic> homeTeam;
   late Map<String, dynamic> bothTeamToScore;
   late Map<String, dynamic> overgoal;
+  late Map<String, dynamic> homeAwayDrawPredictions;
   @override
   @override
   void initState() {
@@ -22,6 +23,8 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
     bothTeamToScore =
         getbothTeamToScore(widget.fixtureData['predictions'], 231);
     overgoal = getOverGoal(widget.fixtureData['predictions'], 235);
+    homeAwayDrawPredictions =
+        getHomeAwayDrawPredictions(widget.fixtureData['predictions']);
   }
 
   Map<String, dynamic> getHomeAwayDrawPredictions(List<dynamic> predictions) {
@@ -29,16 +32,6 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
       if (prediction['predictions'].containsKey('home') &&
           prediction['predictions'].containsKey('away') &&
           prediction['predictions'].containsKey('draw')) {
-        return prediction['predictions'];
-      }
-    }
-    return {};
-  }
-
-  Map<String, dynamic> getSpecificPrediction(
-      List<dynamic> predictions, int typeId) {
-    for (var prediction in predictions) {
-      if (prediction['type_id'] == typeId) {
         return prediction['predictions'];
       }
     }
@@ -179,6 +172,43 @@ class _GenernateDetailsScreenState extends State<GenernateDetailsScreen> {
                   ),
                 ],
               ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    "Full Time Result",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              homeAwayDrawPredictions.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text("Home"),
+                            Text("${homeAwayDrawPredictions['home']}%"),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text("Draw"),
+                            Text("${homeAwayDrawPredictions['draw']}%"),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text("Away"),
+                            Text("${homeAwayDrawPredictions['away']}%"),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Center(
+                      child: Text("No predictions available."),
+                    ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Center(
