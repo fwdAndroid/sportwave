@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sportwave/mobile_mode/colors.dart';
-import 'package:sportwave/mobile_mode/main/home_page_mobile.dart';
 import 'package:sportwave/mobile_mode/main/main_dashboard.dart';
 import 'package:sportwave/services/stripe_service.dart';
 import 'package:sportwave/utils/colors.dart';
@@ -17,6 +15,7 @@ class SubscriptionThree extends StatefulWidget {
 
 class _SubscriptionThreeState extends State<SubscriptionThree> {
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,18 +47,32 @@ class _SubscriptionThreeState extends State<SubscriptionThree> {
                     setState(() {
                       isLoading = true;
                     });
-                    await StripeService.instance.makePayment(50);
+
+                    // Attempt to process the payment
+                    bool isPaymentSuccessful =
+                        await StripeService.instance.makePayment(50);
+
+                    if (isPaymentSuccessful) {
+                      // Payment successful, update Firebase and navigate to MainDashboard
+                      await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .update({"isPaid": true}).then((onValue) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => MainDashboard()));
+                      });
+                    } else {
+                      // Payment failed or canceled, show a message or handle accordingly
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text("Payment was canceled or failed")),
+                      );
+                    }
+
                     setState(() {
                       isLoading = false;
-                    });
-                    await FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                        .update({"isPaid": true}).then((onValue) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (builder) => MainDashboard()));
                     });
                   },
                   child: Text(

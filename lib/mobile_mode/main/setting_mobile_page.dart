@@ -40,7 +40,7 @@ class _SettingMobilePageState extends State<SettingMobilePage> {
                 await FirebaseFirestore.instance
                     .collection("users")
                     .doc(FirebaseAuth.instance.currentUser!.uid)
-                    .update({"isPaid": true}).then((onValue) async {
+                    .update({"isPaid": false}).then((onValue) async {
                   await FirebaseAuth.instance.signOut();
                   Navigator.pushReplacement(
                       context,

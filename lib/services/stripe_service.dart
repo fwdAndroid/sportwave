@@ -5,19 +5,22 @@ import 'package:sportwave/const/constant_key.dart';
 class StripeService {
   StripeService._();
   static final StripeService instance = StripeService._();
-  Future<void> makePayment(int amount) async {
+
+  Future<bool> makePayment(int amount) async {
     try {
       String? result = await createPaymentIntent(amount, "usd");
-      print("sdd$result");
-      if (result == null) return;
+      if (result == null) return false;
+
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
               paymentIntentClientSecret: result,
               merchantDisplayName: "The Game Before The Game"));
-      await _paymentProcess();
-      print(result);
-    } catch (E) {
-      print(E);
+
+      // Process the payment and return the result
+      return await _paymentProcess();
+    } catch (e) {
+      print("Error during payment: $e");
+      return false; // Handle errors and return failure
     }
   }
 
@@ -26,7 +29,7 @@ class StripeService {
       final Dio dio = Dio();
       Map<String, dynamic> data = {
         "amount": _calculateAmount(amount),
-        "currency": currency
+        "currency": currency,
       };
       var response = await dio.post(
         "https://api.stripe.com/v1/payment_intents",
@@ -40,16 +43,11 @@ class StripeService {
         ),
       );
       print(response.data);
-      if (response.data != null) {
-        print("response.data");
-        //  print("Payment Response: " + response.data);
-        return response.data["client_secret"];
-      }
+      return response.data != null ? response.data["client_secret"] : null;
+    } catch (e) {
+      print(e);
       return null;
-    } catch (E) {
-      print(E);
     }
-    return null;
   }
 
   String _calculateAmount(int amount) {
@@ -57,15 +55,22 @@ class StripeService {
     return calculateAmount.toString();
   }
 
-  Future<void> _paymentProcess() async {
+  Future<bool> _paymentProcess() async {
     try {
       print("Payment Called");
       await Stripe.instance.presentPaymentSheet();
-      print("Open");
-      // Stripe.instance.confirmPaymentSheetPayment();
-      print("DOne");
+      print("Payment Successful");
+      return true; // Payment succeeded
+    } on StripeException catch (e) {
+      if (e.error.code == FailureCode.Canceled) {
+        print("Payment Canceled");
+      } else {
+        print("Payment Failed: $e");
+      }
+      return false; // Payment failed or canceled
     } catch (e) {
-      print(e);
+      print("Payment Error: $e");
+      return false; // Any other errors
     }
   }
 }
