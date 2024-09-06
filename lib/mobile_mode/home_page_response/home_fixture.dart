@@ -73,9 +73,6 @@ class _HomeFixtureState extends State<HomeFixture> {
         child: Column(
           children: [
             Text("Total Predictions: $totalPredictions"),
-            Text("Winning Predictions: $winningPredictions"),
-            Text(
-                "Winning Percentage: ${winningPercentage.toStringAsFixed(2)}%"),
             Container(
               height: MediaQuery.of(context).size.height / 1,
               padding: EdgeInsets.all(16.0),

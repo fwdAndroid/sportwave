@@ -107,7 +107,7 @@ class _HomePageMobileState extends State<HomePageMobile> {
             children: [
               Image.asset(
                 "assets/logo.png",
-                height: 100,
+                height: 200,
               ),
               SizedBox(
                 width: 400,
