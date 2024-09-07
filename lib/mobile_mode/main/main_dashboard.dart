@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:sportwave/mobile_mode/colors.dart';
 import 'package:sportwave/mobile_mode/generate/genearate_app.dart';
 import 'package:sportwave/mobile_mode/main/faq_mobile_page.dart';
@@ -17,53 +16,21 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboardState extends State<MainDashboard> {
-  PersistentTabController? _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = PersistentTabController(initialIndex: 0);
+  _changeTab(int index) {
+    setState(() {
+      _selectedTab = index;
+    });
   }
 
-  List<Widget> _buildScreens() {
-    return [
-      const HomePageMobile(),
-      const NewsPageMobile(),
-      const FaqMobilePage(),
-      const GenerateApp(),
-      const SettingMobilePage(),
-    ];
-  }
+  int _selectedTab = 0;
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        activeColorPrimary: mobileBackgroundColor,
-        inactiveColorPrimary: textformColor,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.newspaper),
-        activeColorPrimary: mobileBackgroundColor,
-        inactiveColorPrimary: textformColor,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.query_builder),
-        activeColorPrimary: mobileBackgroundColor,
-        inactiveColorPrimary: textformColor,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.airplane_ticket),
-        activeColorPrimary: mobileBackgroundColor,
-        inactiveColorPrimary: textformColor,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.settings),
-        activeColorPrimary: mobileBackgroundColor,
-        inactiveColorPrimary: textformColor,
-      ),
-    ];
-  }
+  List _pages = [
+    const HomePageMobile(),
+    const NewsPageMobile(),
+    const FaqMobilePage(),
+    const GenerateApp(),
+    const SettingMobilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +39,48 @@ class _MainDashboardState extends State<MainDashboard> {
         final shouldPop = await _showExitDialog(context);
         return shouldPop ?? false; // Return false to prevent closing the app
       },
-      child: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-        items: _navBarsItems(),
-        navBarStyle: NavBarStyle.style6, // Choose the nav bar style here
-        backgroundColor: colorwhite, // Set the background color for the nav bar
-        onItemSelected: (index) {
-          setState(() {
-            _controller!.index = index;
-          });
-        },
+      child: Scaffold(
+        backgroundColor: mainBtnColor,
+        body: _pages[_selectedTab],
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+                icon: const Icon(
+                  Icons.home,
+                  color: black,
+                ),
+                label: "Home"),
+            BottomNavigationBarItem(
+                icon: const Icon(
+                  Icons.newspaper,
+                  color: black,
+                ),
+                label: "News"),
+            BottomNavigationBarItem(
+                icon: const Icon(
+                  Icons.query_builder,
+                  color: black,
+                ),
+                label: "FAQ"),
+            BottomNavigationBarItem(
+                icon: const Icon(
+                  Icons.airplane_ticket,
+                  color: black,
+                ),
+                label: "Generate"),
+            BottomNavigationBarItem(
+                icon: const Icon(
+                  Icons.settings,
+                  color: black,
+                ),
+                label: "Settings"),
+          ],
+          backgroundColor:
+              mainBtnColor, // Set the background color for the nav bar
+          selectedIconTheme: IconThemeData(color: mainBtnColor),
+          onTap: (index) => _changeTab(index),
+          currentIndex: _selectedTab,
+        ),
       ),
     );
   }

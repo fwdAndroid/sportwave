@@ -29,7 +29,7 @@ class _SubscriptionOneState extends State<SubscriptionOne> {
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              "One Month Subscription to get free access of Subscription in just 2s0 Euro",
+              "One Month Subscription to get free access of Subscription in just 20 Euro",
               textAlign: TextAlign.center,
             ),
           ),
