@@ -6,8 +6,10 @@ class GenerateFixture extends StatefulWidget {
   final dynamic fixturesData;
   final int numberOfResponses;
 
-  GenerateFixture(
-      {required this.fixturesData, required this.numberOfResponses});
+  GenerateFixture({
+    required this.fixturesData,
+    required this.numberOfResponses,
+  });
 
   @override
   State<GenerateFixture> createState() => _GenerateFixtureState();
@@ -28,7 +30,7 @@ class _GenerateFixtureState extends State<GenerateFixture> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Filtered Fixtures"),
+        title: Text("The Game Before The Game"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -48,25 +50,14 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                         .shrink(); // Skip this item if no predictions
                   }
 
-                  bool matchesFilter = predictions.any((prediction) {
-                    final typeId = prediction['type_id'];
-                    return typeId == 237 ||
-                        typeId == 231 ||
-                        typeId == 234 ||
-                        typeId == 235;
-                  });
-
-                  if (!matchesFilter) {
-                    return SizedBox
-                        .shrink(); // Skip this item if it doesn't match the filter
-                  }
-
-                  // Extract prediction percentages
+                  // Extract prediction widgets for type IDs 231, 234, 235, 237
                   final List<Widget> predictionWidgets = [];
                   for (var prediction in predictions) {
                     final typeId = prediction['type_id'];
                     final predData = prediction['predictions'];
-                    if (predData is Map) {
+
+                    if ([231, 234, 235, 237].contains(typeId) &&
+                        predData is Map) {
                       final yesValue = predData['yes'];
                       final homeValue = predData['home'];
                       final awayValue = predData['away'];
@@ -84,6 +75,11 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                             'Away: ${awayValue.toStringAsFixed(2)}% (Type ID: $typeId)'));
                       }
                     }
+                  }
+
+                  // Only display the card if there are prediction widgets to show
+                  if (predictionWidgets.isEmpty) {
+                    return SizedBox.shrink();
                   }
 
                   return Card(
@@ -151,6 +147,14 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                                     "Starting At: ${fixture['starting_at']}"),
                               ),
                             ),
+                          // Display the extracted prediction widgets
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: predictionWidgets,
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -61,7 +61,7 @@ class _GenerateAppState extends State<GenerateApp> {
                 final homeValue = predictions['home'];
                 final awayValue = predictions['away'];
 
-                // Check if any of the values meet the criteria
+                // Check for required type_ids and values
                 return (typeId == 237 ||
                         typeId == 231 ||
                         typeId == 234 ||
@@ -73,17 +73,12 @@ class _GenerateAppState extends State<GenerateApp> {
               return false;
             });
           }).toList();
-
-          // Shuffle the filtered data and limit to 20 events
-          filteredData.shuffle();
-          final limitedData = filteredData.take(20).toList();
-
           // Navigate to the next screen with filtered data
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => GenerateFixture(
-                fixturesData: {'data': limitedData},
+                fixturesData: {'data': filteredData},
                 numberOfResponses: numberOfResponses,
               ),
             ),
