@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sportwave/mobile_mode/generate/gesture_result_eight.dart';
 
 class GenerateFixture extends StatefulWidget {
-  final dynamic fixturesData; // Assuming fixturesData is a dynamic type.
+  final dynamic fixturesData;
   final int numberOfResponses;
 
   GenerateFixture(
@@ -18,8 +19,8 @@ class _GenerateFixtureState extends State<GenerateFixture> {
     // Ensure the data field is a list
     final List<dynamic> fixturesList = widget.fixturesData['data'] ?? [];
 
-    int itemCount = fixturesList.length;
     // Limit the item count to the selected number of responses
+    int itemCount = fixturesList.length;
     if (itemCount > widget.numberOfResponses) {
       itemCount = widget.numberOfResponses;
     }
@@ -27,55 +28,80 @@ class _GenerateFixtureState extends State<GenerateFixture> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("The Game Before The Game"),
+        title: Text("Filtered Fixtures"),
       ),
-      body: Container(
-        height:
-            MediaQuery.of(context).size.height / 1, // Adjust height as needed
-        padding: EdgeInsets.all(16.0),
-        child: ListView.builder(
-          itemCount: itemCount,
-          itemBuilder: (context, index) {
-            final fixture = fixturesList[index]; // Access list by index
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height / 1.2,
+              padding: EdgeInsets.all(16.0),
+              child: ListView.builder(
+                itemCount: itemCount,
+                itemBuilder: (context, index) {
+                  final fixture = fixturesList[index];
 
-            final List<dynamic> predictions = fixture['predictions'] ?? [];
+                  // Check if the fixture matches the type_id filter
+                  final predictions = fixture['predictions'];
+                  if (predictions == null || predictions.isEmpty) {
+                    return SizedBox
+                        .shrink(); // Skip this item if no predictions
+                  }
 
-            // Initialize counts
-            double yesPercentage = 0.0;
-            double noPercentage = 0.0;
+                  bool matchesFilter = predictions.any((prediction) {
+                    final typeId = prediction['type_id'];
+                    return typeId == 237 ||
+                        typeId == 231 ||
+                        typeId == 234 ||
+                        typeId == 235;
+                  });
 
-            // Calculate yes and no percentages
-            if (predictions.isNotEmpty) {
-              // Sum up percentages from all predictions
-              double totalYes = 0.0;
-              double totalNo = 0.0;
+                  if (!matchesFilter) {
+                    return SizedBox
+                        .shrink(); // Skip this item if it doesn't match the filter
+                  }
 
-              for (var prediction in predictions) {
-                final predictionMap = prediction['predictions'] ?? {};
-                totalYes += (predictionMap['yes'] ?? 0.0);
-                totalNo += (predictionMap['no'] ?? 0.0);
-              }
+                  // Extract prediction percentages
+                  final List<Widget> predictionWidgets = [];
+                  for (var prediction in predictions) {
+                    final typeId = prediction['type_id'];
+                    final predData = prediction['predictions'];
+                    if (predData is Map) {
+                      final yesValue = predData['yes'];
+                      final homeValue = predData['home'];
+                      final awayValue = predData['away'];
 
-              // Calculate the average percentages
-              yesPercentage = totalYes / predictions.length;
-              noPercentage = totalNo / predictions.length;
-            }
+                      if (yesValue != null && yesValue >= 80) {
+                        predictionWidgets.add(Text(
+                            'Yes: ${yesValue.toStringAsFixed(2)}% (Type ID: $typeId)'));
+                      }
+                      if (homeValue != null && homeValue >= 80) {
+                        predictionWidgets.add(Text(
+                            'Home: ${homeValue.toStringAsFixed(2)}% (Type ID: $typeId)'));
+                      }
+                      if (awayValue != null && awayValue >= 80) {
+                        predictionWidgets.add(Text(
+                            'Away: ${awayValue.toStringAsFixed(2)}% (Type ID: $typeId)'));
+                      }
+                    }
+                  }
 
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (builder) => GestureResultEight(
-                              fixtureData: fixture,
-                            )));
-              },
-              child: yesPercentage >= 80
-                  ? Card(
-                      color: Colors.white,
-                      child: GestureDetector(
-                        child: Column(
-                          children: [
+                  return Card(
+                    color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () {
+                        // Handle tap event if needed
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (builder) => GestureResultEight(
+                                      fixtureData: fixture,
+                                    )));
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (fixture['league'] != null)
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
@@ -84,71 +110,55 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                                     backgroundImage: NetworkImage(
                                         fixture['league']['image_path']),
                                   ),
-                                  Text(" ${fixture['league']['name']}"),
+                                  SizedBox(width: 8.0),
+                                  Text(fixture['league']['name']),
                                 ],
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                if (fixture['league'] != null)
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.network(
-                                      "${fixture['participants'][0]['image_path']}",
-                                      height: 80,
-                                    ),
-                                  ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "${fixture['participants'][0]['name']}",
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "VS",
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "${fixture['participants'][1]['name']}",
-                                    ),
-                                  ],
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(
+                                  fixture['participants'][0]['image_path'],
+                                  height: 80,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.network(
-                                    "${fixture['participants'][1]['image_path']}",
-                                    height: 80,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              ),
+                              Column(
                                 children: [
-                                  // Show Yes percentage only if it's >= 80
-                                  if (yesPercentage >= 80)
-                                    Text(
-                                        "Yes: ${yesPercentage.toStringAsFixed(1)}%"),
-                                  Text(
-                                      "No: ${noPercentage.toStringAsFixed(1)}%"),
+                                  Text(fixture['participants'][0]['name']),
+                                  SizedBox(height: 5),
+                                  Text("VS"),
+                                  SizedBox(height: 5),
+                                  Text(fixture['participants'][1]['name']),
                                 ],
                               ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.network(
+                                  fixture['participants'][1]['image_path'],
+                                  height: 80,
+                                ),
+                              )
+                            ],
+                          ),
+                          if (fixture['starting_at'] != null)
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    "Starting At: ${fixture['starting_at']}"),
+                              ),
                             ),
-                          ],
-                        ),
+                        ],
                       ),
-                    )
-                  : SizedBox.shrink(),
-            );
-          },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

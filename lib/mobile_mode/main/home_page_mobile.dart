@@ -59,15 +59,15 @@ class _HomePageMobileState extends State<HomePageMobile> {
         final decodedResponse = jsonDecode(response.body);
 
         // Pretty print the JSON in chunks to avoid truncation
-        const JsonEncoder encoder = JsonEncoder.withIndent('  ');
-        String prettyPrintedJson = encoder.convert(decodedResponse);
+        // const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+        // String prettyPrintedJson = encoder.convert(decodedResponse);
 
-        // Print the response in chunks of 800 characters
-        final pattern =
-            RegExp('.{1,800}'); // 800 is a safe limit for Flutter's print()
-        pattern
-            .allMatches(prettyPrintedJson)
-            .forEach((match) => print(match.group(0)));
+        // // Print the response in chunks of 800 characters
+        // final pattern =
+        //     RegExp('.{1,800}'); // 800 is a safe limit for Flutter's print()
+        // pattern
+        //     .allMatches(prettyPrintedJson)
+        //     .forEach((match) => print(match.group(0)));
 
         // Add fixtures from the current page to the list
         allFixtures.addAll(decodedResponse['data']);

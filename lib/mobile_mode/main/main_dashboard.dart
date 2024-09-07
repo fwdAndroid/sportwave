@@ -28,7 +28,7 @@ class _MainDashboardState extends State<MainDashboard> {
     const HomePageMobile(),
     const NewsPageMobile(),
     const FaqMobilePage(),
-    const GenerateApp(),
+    GenerateApp(),
     const SettingMobilePage(),
   ];
 

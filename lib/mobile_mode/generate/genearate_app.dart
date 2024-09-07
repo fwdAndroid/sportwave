@@ -51,26 +51,39 @@ class _GenerateAppState extends State<GenerateApp> {
         if (decodedResponse['data'] is List) {
           final List<dynamic> fixturesList = decodedResponse['data'];
 
-          // Filter the predictions where "yes" is equal to or greater than 80
-          final filteredData = fixturesList.map((fixture) {
-            fixture['predictions'] = fixture['predictions'].where((prediction) {
-              final yesValue = prediction['predictions']['yes'];
+          // Filter the fixtures based on prediction criteria
+          final filteredData = fixturesList.where((fixture) {
+            return fixture['predictions'].any((prediction) {
               final typeId = prediction['type_id'];
-              // Check if yesValue is not null, is a number, and typeId is 234
-              return typeId == 234 &&
-                  yesValue != null &&
-                  yesValue is num &&
-                  yesValue >= 80;
-            }).toList();
-            return fixture;
+              final predictions = prediction['predictions'];
+              if (predictions is Map) {
+                final yesValue = predictions['yes'];
+                final homeValue = predictions['home'];
+                final awayValue = predictions['away'];
+
+                // Check if any of the values meet the criteria
+                return (typeId == 237 ||
+                        typeId == 231 ||
+                        typeId == 234 ||
+                        typeId == 235) &&
+                    ((yesValue != null && yesValue >= 80) ||
+                        (homeValue != null && homeValue >= 80) ||
+                        (awayValue != null && awayValue >= 80));
+              }
+              return false;
+            });
           }).toList();
+
+          // Shuffle the filtered data and limit to 20 events
+          filteredData.shuffle();
+          final limitedData = filteredData.take(20).toList();
 
           // Navigate to the next screen with filtered data
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => GenerateFixture(
-                fixturesData: {'data': filteredData},
+                fixturesData: {'data': limitedData},
                 numberOfResponses: numberOfResponses,
               ),
             ),
