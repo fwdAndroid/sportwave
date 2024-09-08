@@ -38,58 +38,95 @@ class _GenerateAppState extends State<GenerateApp> {
     } else if (startDateController.text.isEmpty ||
         endDateController.text.isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Date is Required")));
-    } else {
+          .showSnackBar(const SnackBar(content: Text("Date is Required")));
+      return;
+    }
+
+    setState(() {
+      isLoading = true; // Show loading indicator
+    });
+
+    int currentPage = 1;
+    bool hasMore = true;
+    List<dynamic> allFixtures = [];
+
+    while (hasMore) {
       final String url =
-          "https://fixturesbetween-7qvbnkwoka-uc.a.run.app/?path=football/fixtures/between/${DateFormat('yyyy-MM-dd').format(selectedStartDate!)}/${DateFormat('yyyy-MM-dd').format(selectedEndDate!)}?include=predictions;participants;league";
+          "https://fixturesbetween-7qvbnkwoka-uc.a.run.app/?path=football/fixtures/between/${DateFormat('yyyy-MM-dd').format(selectedStartDate!)}/${DateFormat('yyyy-MM-dd').format(selectedEndDate!)}?include=predictions;participants;league;scores&page=$currentPage";
+
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final decodedResponse = jsonDecode(response.body);
 
-        // Ensure the 'data' key contains a list
-        if (decodedResponse['data'] is List) {
-          final List<dynamic> fixturesList = decodedResponse['data'];
+        // Debugging: Print the entire response
+        //  print("API Response: ${response.body}");
 
-          // Filter the fixtures based on prediction criteria
-          final filteredData = fixturesList.where((fixture) {
-            return fixture['predictions'].any((prediction) {
-              final typeId = prediction['type_id'];
-              final predictions = prediction['predictions'];
-              if (predictions is Map) {
-                final yesValue = predictions['yes'];
-                final homeValue = predictions['home'];
-                final awayValue = predictions['away'];
-
-                // Check for required type_ids and values
-                return (typeId == 237 ||
-                        typeId == 231 ||
-                        typeId == 234 ||
-                        typeId == 235) &&
-                    ((yesValue != null && yesValue >= 80) ||
-                        (homeValue != null && homeValue >= 80) ||
-                        (awayValue != null && awayValue >= 80));
-              }
-              return false;
-            });
-          }).toList();
-          // Navigate to the next screen with filtered data
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => GenerateFixture(
-                fixturesData: {'data': filteredData},
-                numberOfResponses: numberOfResponses,
-              ),
-            ),
-          );
+        // Check if 'data' key exists and is a list
+        if (decodedResponse.containsKey('data') &&
+            decodedResponse['data'] is List) {
+          // Add fixtures from the current page to the list
+          allFixtures.addAll(decodedResponse['data']);
         } else {
-          print("Unexpected data format. 'data' key is not a list.");
+          // print(
+          //     "Unexpected data format. 'data' key is not a list or does not exist.");
+          break;
         }
+
+        // Check if there's more data to fetch
+        hasMore = decodedResponse['pagination']?['has_more'] ?? false;
+        currentPage++;
       } else {
-        print("API request failed with status code: ${response.statusCode}");
+        //   print("API request failed with status code: ${response.statusCode}");
+        break;
       }
     }
+
+    // Filter fixtures based on the required criteria
+    final filteredFixtures = allFixtures.where((fixture) {
+      final predictions = fixture['predictions'];
+      if (predictions is List) {
+        return predictions.any((prediction) {
+          final typeId = prediction['type_id'];
+          final predictionValues = prediction['predictions'];
+
+          // Check if typeId is one of the specified types and if any of the values are >= 80
+          if ((typeId == 231 ||
+                  typeId == 234 ||
+                  typeId == 235 ||
+                  typeId == 237) &&
+              (predictionValues['yes'] != null &&
+                      predictionValues['yes'] >= 80 ||
+                  predictionValues['home'] != null &&
+                      predictionValues['home'] >= 80 ||
+                  predictionValues['away'] != null &&
+                      predictionValues['away'] >= 80)) {
+            return true;
+          }
+          return false;
+        });
+      }
+      return false;
+    }).toList();
+
+    // Process the filtered fixtures further as needed (e.g., shuffle, select a subset)
+    filteredFixtures.shuffle();
+    final selectedFixtures = filteredFixtures.take(20).toList();
+
+    // Navigate to the next screen with the selected fixtures
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GenerateFixture(
+          fixturesData: {'data': selectedFixtures},
+          numberOfResponses: int.parse(numberOfResponsesController.text),
+        ),
+      ),
+    );
+
+    setState(() {
+      isLoading = false; // Hide loading indicator
+    });
   }
 
   @override
