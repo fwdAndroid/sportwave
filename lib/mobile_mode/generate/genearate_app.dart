@@ -60,7 +60,7 @@ class _GenerateAppState extends State<GenerateApp> {
         final decodedResponse = jsonDecode(response.body);
 
         // Debugging: Print the entire response
-        //  print("API Response: ${response.body}");
+        // print("API Response: ${response.body}");
 
         // Check if 'data' key exists and is a list
         if (decodedResponse.containsKey('data') &&
@@ -68,8 +68,7 @@ class _GenerateAppState extends State<GenerateApp> {
           // Add fixtures from the current page to the list
           allFixtures.addAll(decodedResponse['data']);
         } else {
-          // print(
-          //     "Unexpected data format. 'data' key is not a list or does not exist.");
+          // print("Unexpected data format. 'data' key is not a list or does not exist.");
           break;
         }
 
@@ -77,7 +76,7 @@ class _GenerateAppState extends State<GenerateApp> {
         hasMore = decodedResponse['pagination']?['has_more'] ?? false;
         currentPage++;
       } else {
-        //   print("API request failed with status code: ${response.statusCode}");
+        // print("API request failed with status code: ${response.statusCode}");
         break;
       }
     }
@@ -283,13 +282,17 @@ class _GenerateAppState extends State<GenerateApp> {
                           enabled: true,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SaveButton(
-                          onTap: _fetchFixtures,
-                          title: "Submit",
-                        ),
-                      ),
+                      isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SaveButton(
+                                onTap: _fetchFixtures,
+                                title: "Submit",
+                              ),
+                            ),
                     ],
                   ),
                 ),

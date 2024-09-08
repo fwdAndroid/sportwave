@@ -63,16 +63,16 @@ class _GenerateFixtureState extends State<GenerateFixture> {
                       final awayValue = predData['away'];
 
                       if (yesValue != null && yesValue >= 80) {
-                        predictionWidgets.add(Text(
-                            'Yes: ${yesValue.toStringAsFixed(2)}% (Type ID: $typeId)'));
+                        predictionWidgets
+                            .add(Text('Yes: ${yesValue.toStringAsFixed(2)}%'));
                       }
                       if (homeValue != null && homeValue >= 80) {
-                        predictionWidgets.add(Text(
-                            'Home: ${homeValue.toStringAsFixed(2)}% (Type ID: $typeId)'));
+                        predictionWidgets.add(
+                            Text('Home: ${homeValue.toStringAsFixed(2)}%'));
                       }
                       if (awayValue != null && awayValue >= 80) {
-                        predictionWidgets.add(Text(
-                            'Away: ${awayValue.toStringAsFixed(2)}% (Type ID: $typeId)'));
+                        predictionWidgets.add(
+                            Text('Away: ${awayValue.toStringAsFixed(2)}%'));
                       }
                     }
                   }
